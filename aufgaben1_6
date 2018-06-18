@@ -1,0 +1,19 @@
+#!/bin/bash     
+#title          :aufgaben1_6
+#description    :Lösungen zu den Aufgaben 1.6
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./aufgaben1_6
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# a)
+# Siehe Beispiel im PDF
+ps | awk '{ print "1. Spalte " $1 " 3. Spalte " $3 }§
+
+
+# b)
+#  1., 6. und 7. Feld der /etc/passwd
+awk -F: '{print $1, $6, $7}'  </etc/passwd

@@ -1,0 +1,32 @@
+#!/bin/bash     
+#title          :aufgaben1_3
+#description    :Lösungen zu den Aufgaben 1.3
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./aufgaben1_3
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# a)
+sudo cat /var/log/syslog.1 > logcopy
+
+# b) Leerzeichen in Quotes (einfache oder doppelte Gänsefüsschen), 
+# oder \Leerzeichen  sind nötig, um der Shell klarzumachen, dass 
+# nach -d wirklich ein Leerzeichen stehen soll
+cut -d" " -f3 logcopy
+cut -d\   -f3 logcopy
+# Mehrere aufeinander folgende Leerzeichen eliminieren
+cat logcopy | tr -s ' ' | cut -d' ' -f3
+# oder
+tr -s ' ' <logcopy | cut -d' ' -f3
+
+# c)
+tr -s ' ' <logcopy | cut -d" " -f1,2,3
+
+# d) Die PID aus dem ps-Kommando ist die 2. Spalte (rechtsbündig)
+ps -ef | tr -s ' ' | cut -d" " -f4
+
+#e) 
+grep DHCPACK logcopy | tr -s ' ' | cut -d ' ' -f1,2,8,10

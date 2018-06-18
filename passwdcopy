@@ -1,0 +1,4 @@
+messagebus:x:106:110::/var/run/dbus:/bin/false
+jochen:x:1000:1000:Jochen Reinholdt,,,:/home/jochen:/bin/bash
+sshd:x:107:65534::/run/sshd:/usr/sbin/nologin
+gast1:x:1001:1001::/home/gast1:/bin/bash

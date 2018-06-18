@@ -1,0 +1,13 @@
+#!/bin/bash     
+#title          :aufgaben1_5
+#description    :Lösungen zu den Aufgaben 1.5
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./aufgaben1_5
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# a)
+# Siehe Skript hallo

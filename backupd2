@@ -1,0 +1,26 @@
+#!/bin/bash     
+#title          :backupd2
+#description    :Erzeugt eine Kopie des Verzeichnisse, das als 
+#                1. Parameter angegeben ist unter dem Pfad,
+#                der durch den 2. Parameter angegeben ist. An den
+#                Namen des Zielverzeichnisses wird das Tagesdatum angehängt
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./backupd2
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# Basename leifert den letzten Teil eines Pfads
+# Kommandosubstitution weist die Ausabe von an Variable zu
+quellname=`basename $1`
+# alternativ: quellname=$(basename $1)
+
+# Kommandosubstitution weist die Ausabe von date an Variable datum zu
+datum=`date +%Y_%m_%d`
+ziel=$2/$quellname.$datum
+
+# 
+cp -R $1  $ziel
+

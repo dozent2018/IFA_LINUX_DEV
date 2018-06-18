@@ -1,0 +1,15 @@
+# sed-Skript
+#
+# Grundlegende Syntax:
+# s/suchmuster/ersatz/
+#
+# Erster Such- und Ersatzstring: Alles vom dem ersten : bis zum 1. / durch 
+# " hat das Heimatverzeichnis /" ersetzen
+# Das Zeichen / muss im Kommando maskiert werden: \/
+s/:[^/]*:/ hat das Heimatverzeichnis /; 
+
+s/:/, die Shell ist /
+
+# Zweiter Such- und Ersatzstring: 
+# das verbleibende : ersetzen
+s/:/, die Shell ist /

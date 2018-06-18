@@ -1,0 +1,13 @@
+#!/bin/bash     
+#title          :paramtest1
+#description    :Gibt den Namen des Scripts und die Anzahl der Parameter aus
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./paramtest1
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+echo Name : $0
+echo Anzahl Parameter : $#

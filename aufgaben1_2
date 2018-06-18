@@ -1,0 +1,21 @@
+#!/bin/bash     
+#title          :aufgaben1_2
+#description    :Lösungen zu Aufaben 1.2
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./aufgaben1_2
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# a)
+sudo tail /var/log/syslog
+
+# b)
+sudo tail -20 /var/log/syslog
+
+# c)
+sudo tail -f /var/log/syslog
+
+
