@@ -1,0 +1,21 @@
+#!/bin/bash     
+#title          :paramtest5
+#description    :Prüft, wieviele  Parameter übergeben wurden und gibt diese aus
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./paramtest4
+#notes          :Benutzt while-schleife und shift
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+echo Anzahl Parameter: $#
+anzahl=$#
+zahler=1
+
+while [ $zahler -le $anzahl ]
+do
+	echo Parameter $zahler: $1
+	let zahler=$zahler+1
+	shift
+done
