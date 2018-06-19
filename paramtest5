@@ -11,11 +11,11 @@
 
 echo Anzahl Parameter: $#
 anzahl=$#
-zahler=1
+zaehler=1
 
-while [ $zahler -le $anzahl ]
+while [ $zaehler -le $anzahl ]
 do
-	echo Parameter $zahler: $1
-	let zahler=$zahler+1
+	echo Parameter $zaehler: $1
+	let zaehler=$zaehler+1
 	shift
 done
