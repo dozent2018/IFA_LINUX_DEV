@@ -1,0 +1,5 @@
+var=10
+for ((i=var;i>=0;i--))
+do
+	echo $i
+done

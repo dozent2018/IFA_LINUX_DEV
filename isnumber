@@ -1,0 +1,6 @@
+if [ $1 -eq $1 ] 2>/dev/null
+then
+	echo $1 is a number
+else
+	echo $1 is not a number
+fi
