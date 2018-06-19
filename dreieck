@@ -1,0 +1,22 @@
+#!/bin/bash     
+#title          :dreieck§
+#description    :Gibt in einer for-schleife soviel sterne aus,
+#	 	 wie in Parameter1 angegeben ist
+#author         :Jochen Reinholdt
+#date           :20180619
+#version        :1      
+#usage          :./dreieck anzahl
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+for (( senkrecht=1; senkrecht<=$1; senkrecht++ ))
+do
+	waagerecht=$senkrecht
+
+	for (( i=1; i<=$senkrecht; i++ ))
+	do
+		echo -n \*
+	done
+	echo
+done

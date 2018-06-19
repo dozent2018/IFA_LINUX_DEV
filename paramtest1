@@ -4,7 +4,7 @@
 #author         :Jochen Reinholdt
 #date           :20180618
 #version        :1      
-#usage          :./paramtest1
+#usage          :./paramtest1 parameterliste
 #notes          :       
 #bash_version   :3.2.57(1)-release
 #============================================================================

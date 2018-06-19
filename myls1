@@ -1,12 +1,15 @@
 #!/bin/bash     
-#title          :paramtest2
-#description    :Gibt den Inhalt der ersten 9 Parameter aus
+#title          :myls1  
+#description    :Simuliert ls ohne ls
 #author         :Jochen Reinholdt
-#date           :20180618
+#date           :20180619
 #version        :1      
-#usage          :./paramtest2 parameterliste
+#usage          :./myls1
 #notes          :       
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-echo Parameter: $1 $2 $3 $4 $5 $6 $7 $8 $9
+for datei in *
+do
+	echo $datei
+done

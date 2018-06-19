@@ -1,12 +1,16 @@
 #!/bin/bash     
-#title          :paramtest2
-#description    :Gibt den Inhalt der ersten 9 Parameter aus
+#title          :sterne1
+#description    :Gibt in einer for-schleife 10 sterne aus
 #author         :Jochen Reinholdt
-#date           :20180618
+#date           :20180619
 #version        :1      
-#usage          :./paramtest2 parameterliste
+#usage          :./sterne1
 #notes          :       
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-echo Parameter: $1 $2 $3 $4 $5 $6 $7 $8 $9
+for ((i=1;i<=10;i++))
+do
+	echo -n \*
+done
+echo

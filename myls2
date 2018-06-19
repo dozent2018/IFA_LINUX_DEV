@@ -1,0 +1,24 @@
+#!/bin/bash     
+#title          :myls1  
+#description    :Simuliert ls ohne ls
+#author         :Jochen Reinholdt
+#date           :20180619
+#version        :1      
+#usage          :./myls1
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+for datei in *
+do
+	echo -n $datei : 
+	if [ -f $datei ]
+	then
+		echo " Datei"
+	fi
+
+	if [ -d $datei ]
+	then
+		echo " Verzeichnis"
+	fi
+done

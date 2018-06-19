@@ -1,21 +1,19 @@
 #!/bin/bash     
-#title          :paramtest5
+#title          :paramtest6
 #description    :Prüft, wieviele  Parameter übergeben wurden und gibt diese aus
 #author         :Jochen Reinholdt
 #date           :20180618
 #version        :1      
-#usage          :./paramtest5 parameterliste
-#notes          :Benutzt while-schleife und shift
+#usage          :./paramtest6 parameterliste
+#notes          :Benutzt for-schleife und $@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
 echo Anzahl Parameter: $#
-anzahl=$#
 zaehler=1
 
-while [ $zaehler -le $anzahl ]
+for param in $@
 do
-	echo Parameter $zaehler: $1
+	echo Parameter$zaehler: $param
 	let zaehler=$zaehler+1
-	shift
 done
