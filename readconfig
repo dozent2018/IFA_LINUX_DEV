@@ -1,0 +1,45 @@
+#!/bin/bash     
+#title          :readconfig
+#description    :Lesen einer Datei mit 2 Spalten, die durch ein Trennzeichen 
+#		 getrennt sind. Einfügen in ein assoziatives Array: 
+#		 Spalte1 ist der Schlüssel, Spalte 2 der Wert
+#author         :Jochen Reinholdt
+#date           :20180823
+#version        :1.0    
+#usage          :readconfig -d delimiting_character file
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+declare -A map
+
+if [ $1 == "-d" ]
+then
+    delimiter=$2
+    file=$3
+else
+    delimiter=" "
+    file=$1
+fi
+
+while read line
+do
+	# Leerzeilen ignorieren
+	if [ ! -z "$line" ]
+	then
+		# Trennzeichen und alles danach abschneiden
+		key=${line%$delimiter*}
+		# Trennzeichen und alles davor abschneiden
+		value=${line#*$delimiter}
+		map[$key]=$value
+	fi
+done < $file
+
+for key in ${!map[@]}
+do
+	echo key:$key value:${map[$key]}
+done
+
+
+	
+
+

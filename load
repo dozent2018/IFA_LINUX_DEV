@@ -1,0 +1,23 @@
+#!/bin/bash     
+#title          :load   
+#description    :Generiert künstlich Systemauslastung
+#author         :Jochen Reinholdt
+#date           :20180823
+#version        :1.0    
+#usage          :./load 
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+
+level=$1
+dauer=$2
+
+while [ $dauer -gt 0 ]
+do
+	for (( i=0; i<level; i++ ))
+	do
+		genload_cpu &
+	done
+	sleep 1
+	let dauer=$dauer-1
+done

@@ -1,0 +1,19 @@
+#!/bin/bash     
+#title          :traptest
+#description    :Demo trap für SIGINT
+#author         :Jochen Reinholdt
+#date           :20180824
+#version        :1.0    
+#usage          :./traptest
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+
+trap 'echo SIGINT abgefangen' 2
+trap 'echo SIGTERM abgefangen' 15
+i=0
+while true
+do
+    sleep 1
+done
+

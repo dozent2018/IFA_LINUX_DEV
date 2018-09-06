@@ -1,0 +1,40 @@
+#!/bin/bash     
+#title          :chkdf1  
+#description    :Wertet die Spalten 5 (%verwendet)  und 6 (mount-point) in der Ausgabe von df aus. 
+#		 und speichert beide als ein Schlüssel/Wert-Paar in einem assozativen Array
+#author         :Jochen Reinholdt
+#date           :20180823
+#version        :1.0    
+#usage          :./chkdf1
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+
+
+
+# map wird als assoziatives Array deklariert
+declare -A map
+
+# Wir benötigen die Werte 6. und 5. Spalte der Ausgabe von df -k nach entfernen der Überschriften
+# und des %-Zeichens. Zeichen ':' wird als Trenner eingefügt
+for line in $(df -k | tail --lines=+2 | tr -d '%' | awk '{print $6 ":" $5}')
+do
+	# hier wird bash Parameter Expansion verwendet um die beiden Werte auszuschneiden. 
+	# Alternativ wäre auch sed möglich
+	# ${VARIABLE%MUSTER} entfernt MUSTER vom Ende des Textes in VARIABLE
+	# hier: das Zeichen ':' und alles was danach kommt
+	dir=${line%:*}
+
+	# ${VARIABLE#MUSTER} entfernt MUSTER vom Anfang des Textes in VARIABLE
+	# hier: das Zeichen ':' und alles was davor kommt
+	pct=${line#*:}
+
+	# Zuweisung eines Schlüssel/Wert Paars an das Array map
+	map[$dir]=$pct
+done
+
+# Ausgabe des Array map
+for key in ${!map[@]}
+do
+	echo mountpoint:$key %Verw:${map[$key]}
+done

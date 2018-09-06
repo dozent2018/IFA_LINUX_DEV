@@ -1,0 +1,21 @@
+#!/bin/bash     
+#title          :functest5
+#description    :Demo lokale Variablen 2
+#author         :Jochen Reinholdt
+#date           :20180820
+#version        :1.0    
+#usage          :./functest5
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+myfunc() {
+	local var=30
+	echo var in myfunc: $var
+}
+
+var=0
+myfunc
+echo var im Hauptprogramm: $var
+
+	

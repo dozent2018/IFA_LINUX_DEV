@@ -1,0 +1,23 @@
+#!/bin/bash     
+#title          :and_demo
+#description    :Demonstriert den gebrauch der UND-Verknüpfung mit -a oder &&
+#author         :Jochen Reinholdt
+#date           :20180828
+#version        :1.0    
+#usage          :./and_demo
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+file=$1
+
+if [ -f $file -a -w $file ]
+then
+   echo "Datei $file: normale Datei mit Schreibrecht"
+elif [ -d $file ] && [ -w $file ]
+then
+   echo "Datei $file: Verzeichnis mit Schreibrecht"
+else
+   echo "weder noch"
+fi
+

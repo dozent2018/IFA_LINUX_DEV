@@ -1,0 +1,23 @@
+#!/bin/bash     
+#title          :or_demo
+#description    :Demonstriert die ODER-Verknüpfung mit -o oder II
+#author         :Jochen Reinholdt
+#date           :20180828
+#version        :1.0    
+#usage          :./or_demo
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+file=$1
+
+if [ -f $file -o -d $file ]
+then
+   echo "Datei $file: normale Datei oder Verzeichnis"
+elif [ -b $file ] || [ -c $file ]
+then
+   echo "Datei $file: Character- oder Block-Gerätedatei"
+else
+   echo "weder noch"
+fi
+

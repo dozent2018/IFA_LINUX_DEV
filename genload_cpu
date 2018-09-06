@@ -1,0 +1,5 @@
+a=500000
+while [ $a -gt 0 ]
+do
+	let a=a-1;
+done

@@ -1,0 +1,27 @@
+#!/bin/bash     
+#title          :moncpu  
+#description    :Wertet die Spalten 15 (% cpu idle), Timestamp und Datum der Ausgabe von vmstat -n -t -S M 1 aus
+#		 und speichert beide als ein Schlüssel/Wert-Paar in einem assozativen Array für weitere
+#		 Auswertungen
+#author         :Jochen Reinholdt
+#date           :20180823
+#version        :1.0    
+#usage          :./moncpu
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+
+
+
+# map wird als assoziatives Array deklariert
+declare -A map
+
+vmstat -n -t -S M 5 | tail --lines=+3 | awk '{print $18" "$19" "$15}' | while read line
+do
+	datetime=${line##' '}
+	echo $datetime
+done
+
+while read line
+do
+   a[ cut

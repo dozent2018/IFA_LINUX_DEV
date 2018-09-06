@@ -1,0 +1,22 @@
+#!/bin/bash     
+#title          :chkdf  
+#description    :Wertet die Spalten 5 und 6 in der Ausgabe von df aus. Unterdrückt die Ausgabe von %
+#author         :Jochen Reinholdt
+#date           :20180823
+#version        :1.0    
+#usage          :./chkdf
+#notes          :       
+#bash_version   :4.4.12(1)-release
+#============================================================================
+
+declare -A map
+OLDIFS=$IFS
+IFS='\n'
+map=$(df -k | tail --lines=+2 | tr -d '%' | awk '{print "["$6 "]=" $5}')
+IFS=$OLDIFS
+
+
+for key in ${!map[@]}
+do
+	echo key: $key value: ${map[$key]}
+done
