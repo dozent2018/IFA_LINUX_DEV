@@ -13,8 +13,8 @@ datei=$2
 
 while read zeile 
 do
-    if [ $zeile = *"$muster"* ] 
-    then
-  	echo $zeile
+    if [[ $zeile == *"$muster"* ]]
+		then
+  		echo $zeile
     fi
 done < $datei
