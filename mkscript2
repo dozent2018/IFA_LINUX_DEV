@@ -52,6 +52,7 @@ if [ -e $file ] ; then
     exit 2
 fi
 
+# Inhalt in die Datei schreiben
 echo "#!/bin/bash" > $file
 echo "# Name        : $title" >> $file 
 echo "# Beschreibung: $dscrp" >> $file 
@@ -61,8 +62,12 @@ echo "# Datum       : $today" >> $file
 echo "# $div " >> $file
 echo >> $file
 
+
 # Datei ausführbar machen
 chmod +x $file
 
-# Datei im Editor öffnen und hinter den Kopf positionieren
-nano +8 $file
+# Anzahl Zeilen datei ermitteln
+lines=`wc -l $file | awk '{print $1}'`
+
+# Datei im Editor öffnen und auf die letzte Zeile positionieren
+nano +$lines $file
