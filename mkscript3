@@ -16,7 +16,18 @@
 today=$(date +%Y%m%d)
 div="================================================================"
 
-if [ "$1" = -i ]
+# Bei nur einer Option etwas übertrieben, aber wenn später mehr Optionen hinzukommen
+# ist die Verwendung von getopts von Vorteil!
+interactive=1
+while getopts  i 2>/dev/null
+do
+    case $opt in
+        i) interactive=0 ;;
+        ?) echo "Unbekannte Option" ;;
+    esac
+done
+
+if [ "$interactive" -eq 0 ]
 then
 	# interaktiver Modus
     # Angaben für den Kommentarkopf werden abgefragt
@@ -69,5 +80,32 @@ chmod +x $file
 # Anzahl Zeilen datei ermitteln
 lines=`wc -l $file | awk '{print $1}'`
 
-# Datei im Editor öffnen und auf die letzte Zeile positionieren. Hier wird nano verwendet
-nano +$lines $file
+PS3='Bitte wählen Sie einen Editor. Abbruch mit Quit: '
+select opt in "vi" "nano" "emacs" "Abbruch"
+do
+    case $opt in
+        "vi")
+            echo vi
+            break
+            ;;
+        "nano")
+            echo nano
+            break
+            ;;
+        "pico")
+            echo pico
+            break
+            ;;
+        "emacs")
+            echo emacs
+            break
+            ;;
+        "Abbruch" )
+            break
+            ;;
+        *)  echo Unbekannte Option
+            continue
+            ;;
+    esac
+done
+exit 0

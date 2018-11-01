@@ -1,0 +1,8 @@
+zeilen=0
+ps -f | while read zeile
+do
+    echo $zeile
+    let zeilen=zeilen+1
+    echo $zeilen
+done
+echo $zeilen gelesen

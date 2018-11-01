@@ -1,0 +1,11 @@
+
+
+#!/bin/bash
+
+
+zaehler=0
+while read zeile
+do
+    let zaehler=$zaehler+1
+done
+echo $zaehler

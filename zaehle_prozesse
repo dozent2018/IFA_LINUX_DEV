@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# es laufen 366 Prozesse
+
+zaehler=0
+ps -e | while read zeile
+do
+    let zaehler=$zaehler+1
+    echo $zaehler
+done
+echo $zaehler

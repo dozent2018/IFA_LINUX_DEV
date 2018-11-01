@@ -1,0 +1,37 @@
+#!/bin/bash     
+#title          :rechner
+#description    :Demonstriert Zusammenspiel case und while
+#author         :Jochen Reinholdt
+#date           :20180925
+#version        :1.0    
+#usage          :./rechner
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+while read wert1 op wert2
+do
+    # Bei Eingabe von ENDE Schleife beenden
+    [ $wert1 = "ENDE" ] && break
+
+    # Prüfung auf ganzzahlige Werte
+    if ! [ $wert1 -eq $wert1 ] 2>/dev/null || ! [ $wert2 -eq $wert2 ] 2>/dev/null
+    then
+        echo "Nur ganze Zahlen erlaubt"
+        # Sprung zurück zum read
+        continue
+    fi
+
+    # Berechnung durchführen
+    case $op in
+        +)        let ergebnis=$wert1+$wert2 ;;
+        -)        let ergebnis=$wert1-$wert2 ;;
+        x|X)      let ergebnis=$wert1*$wert2 ;;
+        /)        let ergebnis=$wert1/$wert2 ;;
+        %|mod)    let ergebnis=$wert1%$wert2 ;;
+        *)        ergebnis="Unbekannte Operation"
+    esac
+
+    # Ausgabe
+    echo $ergebnis
+done
