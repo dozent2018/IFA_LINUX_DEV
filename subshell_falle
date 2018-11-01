@@ -1,8 +1,11 @@
-zeilen=0
-ps -f | while read zeile
+export zeilen=0
+echo Zunächst Shell $BASHPID
+cat textdatei | while read eimer
 do
-    echo $zeile
+    echo Subshell $BASHPID
+    echo $eimer
     let zeilen=zeilen+1
     echo $zeilen
 done
+echo Wieder in Shell $BASHPID
 echo $zeilen gelesen
