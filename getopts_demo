@@ -1,5 +1,3 @@
-
-
 while getopts abc:D: opt 2>/dev/null
 do
     case $opt in

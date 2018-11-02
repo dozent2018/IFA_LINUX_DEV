@@ -16,18 +16,27 @@
 today=$(date +%Y%m%d)
 div="================================================================"
 
-# Bei nur einer Option etwas übertrieben, aber wenn später mehr Optionen hinzukommen
-# ist die Verwendung von getopts von Vorteil!
-interactive=1
-while getopts  i 2>/dev/null
+# Default-Werte setzen
+interactive=no
+shell=/bin/bash
+
+while getopts :s:i opt 
 do
     case $opt in
-        i) interactive=0 ;;
-        ?) echo "Unbekannte Option" ;;
+        i) interactive=yes
+           ;;
+        s) shell=$OPTARG 
+           ;;
+        :) echo "-$OPTARG benötigt ein zusätzliches Argument"
+           exit 11
+           ;;
+        ?) echo "Unbekannte Option -$OPTARG" 
+           exit 10
+           ;;
     esac
 done
 
-if [ "$interactive" -eq 0 ]
+if [ "$interactive" == "yes" ]
 then
 	# interaktiver Modus
     # Angaben für den Kommentarkopf werden abgefragt
@@ -64,7 +73,7 @@ if [ -e $file ] ; then
 fi
 
 # Inhalt in die Datei schreiben
-echo "#!/bin/bash" > $file
+echo "#!$shell" > $file
 echo "# Name        : $title" >> $file 
 echo "# Beschreibung: $dscrp" >> $file 
 echo "# Autor       : $autor" >> $file 
@@ -80,24 +89,18 @@ chmod +x $file
 # Anzahl Zeilen datei ermitteln
 lines=`wc -l $file | awk '{print $1}'`
 
-PS3='Bitte wählen Sie einen Editor. Abbruch mit Quit: '
-select opt in "vi" "nano" "emacs" "Abbruch"
+echo
+echo 'Wählen Sie einen Editor: '
+PS3='Ihre Auswahl: '
+select opt in "vi" "nano" "Abbruch"
 do
     case $opt in
         "vi")
-            echo vi
+            vi +$lines $file
             break
             ;;
         "nano")
-            echo nano
-            break
-            ;;
-        "pico")
-            echo pico
-            break
-            ;;
-        "emacs")
-            echo emacs
+            nano +$lines $file
             break
             ;;
         "Abbruch" )

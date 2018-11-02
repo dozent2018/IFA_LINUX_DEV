@@ -1,6 +1,6 @@
 
 
-PS3='Please enter your choice: '
+PS3='Geben Sie die passende Zahl Ein: '
 select opt in "Option 1" "Option 2" "Option 3" "Quit"
 do
     case $opt in
