@@ -1,0 +1,35 @@
+#!/bin/bash     
+#title          :backup1
+#description    :Aufgabe backup1 in Block2
+#author         :Jochen Reinholdt
+#date           :20181108
+#version        :1      
+#usage          :./backup1 -s quellverzeichnis -t zielverzeichnis
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+while getopts s:t: option
+do
+    case $option in
+        s) sourcedir=$OPTARG ;;
+        t) targetdir=$OPTARG ;;
+        ?) echo "$option gibt's nicht!" 
+           echo RTFM!
+           ;;
+    esac
+done
+
+mkdir $targetdir 2>/dev/null 
+if ! [ -w $targetdir ]
+then
+    echo "Keine Schreiberechtigung in $targetdir"
+    exit 3
+fi
+
+for pfadname in $(find $sourcedir -name "*.png" -print)
+do
+    echo kopiere Datei: $pfadname nach $targetdir
+    dateiname=$(basename $pfadname)
+    cp $pfadname $targetdir/$dateiname
+done

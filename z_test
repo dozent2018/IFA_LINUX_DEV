@@ -1,0 +1,8 @@
+if ! [ $1 -eq $2 ] 2>/dev/null
+then
+    echo WAHR!
+else
+    echo FALSCH!
+fi
+
+

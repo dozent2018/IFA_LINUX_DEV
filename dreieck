@@ -1,5 +1,5 @@
 #!/bin/bash     
-#title          :dreieck§
+#title          :dreieck
 #description    :Gibt in einer for-schleife soviel sterne aus,
 #	 	 wie in Parameter1 angegeben ist
 #author         :Jochen Reinholdt
@@ -10,12 +10,13 @@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-for (( senkrecht=1; senkrecht<=$1; senkrecht++ ))
+# Schleife über die Zeilen
+for (( zeile=1; zeile<=$1; zeile++ ))
 do
-	waagerecht=$senkrecht
-
-	for (( i=1; i<=$senkrecht; i++ ))
+    # Schleife über die Spalten einer Zeile 
+	for (( spalte=1; spalte <= $zeile; spalte++ ))
 	do
+        # Ein Stern zur Zeit wird ausgegeben
 		echo -n \*
 	done
 	echo

@@ -1,19 +1,19 @@
 
 
 PS3='Geben Sie die passende Zahl Ein: '
-select opt in "Option 1" "Option 2" "Option 3" "Quit"
+select opt in "bread" "cheese" "ham" "quit"
 do
     case $opt in
-        "Option 1")
-            echo "you chose choice 1"
+        "bread")
+            echo "you chose choice 1, $opt"
             ;;
-        "Option 2")
-            echo "you chose choice 2"
+        "cheese")
+            echo "you chose choice 2, $opt"
             ;;
-        "Option 3")
+        "ham")
             echo "you chose choice $REPLY which is $opt"
             ;;
-        "Quit")
+        "quit")
             break
             ;;
         *) echo "invalid option $REPLY";;
