@@ -1,22 +1,53 @@
 #!/bin/bash     
-#title          :chkdf  
-#description    :Wertet die Spalten 5 und 6 in der Ausgabe von df aus. Unterdrückt die Ausgabe von %
+#title          :chkdf2
+#description    :Liest beim Start ein Konfigurationsfile ein, das jeweils einen 
+#                Mountpunkt und einen Schwellenwert für den Füllungsgrad enthält. 
+#                Format der Zeilen im Konfigurationsfile ist Mountpoint:Schwellenwert. 
+#                Prüft dann in regelmässigen Zeitabständen mit df -k, ob der Schwellenwert 
+#                für einen der Mountpunkte überschritten wurde und schickt in diesem Fall 
+#                ein Mail an root. Optionen: 
+#                -f <Pfad zum Konfigurationsfile> 
+#                -i <Intervall in Sekunden>
+#                Defaultwerte: 
+#                Ohne -f heisst das Konfigurationsfile chkdf.cfg und stehlt im aktuellen Verzeichnis
+#                Ohne -i ist das Zeitintervall 5 Minuten = 300 Sekunden
 #author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :./chkdf
+#usage          :chkdf1b [-f Konfigurationsfile] [-i Zeitintervall in sec. ]
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-declare -A map
-OLDIFS=$IFS
-IFS='\n'
-map=$(df -k | tail --lines=+2 | tr -d '%' | awk '{print "["$6 "]=" $5}')
-IFS=$OLDIFS
+configfile=./chkdf.cfg      # Default-Wert für die Konfigurationsdatei
+interval=300                # Default-Wert für das Zeitintervall in Sekunden
+declare -A schwellwerte     # Assoziatives Array für die Speicherung der Konfiguration
 
-
-for key in ${!map[@]}
+# Konfigurationsdatei lesen und in einem assoziativen Array speichern
+# Schlüssel ist ein Mountpoint in der fstab, Wert der festgelegte Schwellenwert
+# Das Format jeder Zeile im File ist Mountpoint:Schwellenwert
+while read configline 
 do
-	echo key: $key value: ${map[$key]}
+    # Der erste Teil vor dem : ist das gemountete Dateisystem
+    filesystem=${configline%:*}
+    # Der zweite Teil nach dem : ist das gemountete Dateisystem
+	schwellwert=${configline#*:}
+	schwellwerte[$filesystem]=$schwellwert
+done < $configfile
+
+for i in ${!schwellwerte[@]}
+do
+    echo mountpunkt $i: ${schwellwerte[$i]}
+done    
+
+# Variante mit tr, cut und sed
+for dfline in $( df -k | tr -s ' ' | cut -d' ' -f5,6 | sed -n '2,$ s/% /:/ p')
+do
+    mountpunkt=${dfline#*:}
+    proz_voll=${dfline%:*}
+    # Wenn zu einem Mountpunkt ein Schwellwert existiert und er erreicht oder überschritten wird
+    if [ -n "${schwellwerte[$mountpunkt]}" ] && [ $proz_voll -ge ${schwellwerte[$mountpunkt]} ]
+    then
+        echo Alarm: $mountpunkt ist zu $proz_voll % voll
+    fi
 done

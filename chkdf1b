@@ -1,21 +1,21 @@
 #!/bin/bash     
-#title          :chkdf1a
-#description    :Variante zu chkdf1 (siehe auch Kommentare dort) nur mit awk
+#title          :chkdf1b
+#description    :Variante zu chkdf1 (siehe auch Kommentare dort) nur mit sed
 #author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :chkdf1a
+#usage          :chkdf1b
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
 declare -A map
 
-# NR>1 im awk-Skript überspringt die 1. Zeile, gsub() ersetzt das %-Zeichen durch nichts
-for line in $(df -k | awk 'NR>1 {gsub("%",""); print $6 ":" $5 }')
+# Variante mit tr, cut und sed
+for line in $( df -k | tr -s ' ' | cut -d' ' -f5,6 | sed -n '2,$ s/% /:/ p')
 do
-	dir="${line%:*}"
-	pct="${line#*:}"
+	pct=${line%:*}
+    dir=${line#*:}
 	map[$dir]=$pct
 done
 

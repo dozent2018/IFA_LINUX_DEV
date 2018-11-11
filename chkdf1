@@ -5,7 +5,7 @@
 #author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :./chkdf1
+#usage          :chkdf1
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
@@ -15,12 +15,15 @@
 # map wird als assoziatives Array deklariert
 declare -A map
 
-# Wir benötigen die Werte 6. und 5. Spalte der Ausgabe von df -k nach entfernen der Überschriften
-# und des %-Zeichens. Zeichen ':' wird als Trenner eingefügt
+# Wir benötigen die Werte 6. und 5. Spalte der Ausgabe von df -k 
+# (je ein Dateisystem und sein Füllungsgrad in %) nach entfernen der Überschriften
+# und des %-Zeichens. Zeichen ':' wird als Trenner dazwischen eingefügt
 for line in $(df -k | tail --lines=+2 | tr -d '%' | awk '{print $6 ":" $5}')
 do
-	# hier wird bash Parameter Expansion verwendet um die beiden Werte auszuschneiden. 
-	# Alternativ wäre auch sed möglich
+    # Jede Zeile hat jetzt das Format Filesystem:Füllungsgrad
+
+	# Dann wird bash Parameter Expansion verwendet um die beiden Werte auszuschneiden. 
+	# Alternativ wäre das auch mit sed möglich
 	# ${VARIABLE%MUSTER} entfernt MUSTER vom Ende des Textes in VARIABLE
 	# hier: das Zeichen ':' und alles was danach kommt
 	dir=${line%:*}
@@ -36,5 +39,5 @@ done
 # Ausgabe des Array map
 for key in ${!map[@]}
 do
-	echo mountpoint:$key %Verw:${map[$key]}
+	echo key: $key value: ${map[$key]}
 done

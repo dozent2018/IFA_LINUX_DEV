@@ -1,0 +1,24 @@
+#!/bin/bash     
+#title          :paramtest7
+#description    :Prüft, wieviele  Parameter übergeben wurden und gibt diese aus
+#author         :Jochen Reinholdt
+#date           :20180718
+#version        :1      
+#usage          :./paramtest7 parameterliste
+#notes          :Benutzt for-schleife und $@
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+nparams=$# 
+
+for parameter in $@
+do
+   if [ -e $parameter ]
+   then
+        echo Eintrag $parameter existiert
+   fi
+   if [ -f $parameter ]
+   then
+        echo Eintrag $parameter ist eine normale Datei
+   fi 
+done
