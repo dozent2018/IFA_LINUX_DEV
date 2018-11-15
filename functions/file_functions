@@ -1,0 +1,69 @@
+#!/bin/bash     
+#title          :file_functions
+#description    :Nützliche Funktionen für Dateiattribute
+#author         :Jochen Reinholdt
+#date           :20180820
+#version        :1.0    
+#usage          :source <Path-To-This-File>/<This-File> ODER . <Path-To-This-File>/This-File
+#notes          :Rückgabe eines ganzzahligen Werts mit return statt exit      
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+
+# Prüft, ob das erste Argument der Funktion der Name eines Verzeichniseintrages ist
+entry_exists() {
+    if test -e  $1
+    then
+	    return 0
+    fi
+	return 1
+}
+
+export -f file_exists
+
+
+# Prüft, ob für das erste Argument der Funktion Schreibrecht besteht
+is_writable() {
+    if test -w  $1
+    then
+	    return 0
+    fi
+	return 1
+}
+
+export -f is_writable
+
+
+# Prüft, ob für das erste Argument der Funktion Ausführungsrecht besteht
+is_executable() {
+    if test -w  $1
+    then
+	    return 0
+    fi
+	return 1
+}
+
+export -f is_executable
+
+# Prüft, ob das erste Argument der Funktion der Name eines Verzeichnisses ist
+is_directory() {
+    if test -d  $1
+    then
+	    return 0
+    fi
+	return 1
+}
+
+export -f is_directory
+
+# Prüft, ob das erste Argument der Funktion der Name einer normalen Datei ist
+is_normal_file() {
+    if test -f  $1
+    then
+	    return 0
+    fi
+	return 1
+}
+
+export -f is_normal_file
+

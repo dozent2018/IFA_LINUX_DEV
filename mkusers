@@ -44,3 +44,6 @@ do
 		echo $username:$password >> pwlist
 	fi
 done
+
+# Passworte mit chpasswd setzen (als root)
+# cat pwlist | chpasswd

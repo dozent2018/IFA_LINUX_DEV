@@ -1,26 +1,28 @@
 #!/bin/bash     
 #title          :util_functions
-#description    :definiert nützliche Funktionen für Scripts und exportiert sie
+#description    :Library, definiert nützliche Funktionen für Scripts und exportiert sie
 #author         :Jochen Reinholdt
 #date           :20181018
 #version        :1.0    
-#usage          :source <Path-To-File>/util_functions ODER . <Path-To-File>/util_functions
+#usage          :source <Path-To-This-File>/<This-File> ODER . <Path-To-This-File>/This-File
 #notes          :kann in .profile, .bashrc oder im Skript selbst ausgeführt werden
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-# Funktion, die eine Kurzbeschreibung für den Aufruf eines Skripts ausgibt
-# Wenn die globale Variable usage_text gesetzt ist, gibt err_usage diesen
-# Text aus. Wenn nicht, gibt sie den Inhalt des 1. Parameter aus
-err_usage() {
-    if [ -z "$usage_text" ]
+# err_usage gibt eine Kurzbeschreibung für den Aufruf eines Skripts aus.
+# Diese kann als 1. Parameter angegeben werden. Wenn er nicht angegeben wird,
+# aber die Variable usage_text gesetzt ist, gibt err_usage deren Inhalt aus
+# Wenn Sie gesetzt ist, einen Ersatztext
+
+err_usage () {
+    if [ -n "$1" ]
     then
-        echo $usage_text
-    elif [ -z "$1 ]
-        echo $1
-    else
-        echo "No usage information"
+        $usage_text="$1"
+    elif [ -z "$usage_text" ]
+    then
+        usage_text="No usage information available"
     fi
+    echo "usage: $(basename $0) $usage_text" >&2
     return 0
 }
 
@@ -29,7 +31,9 @@ export -f err_usage
 # Funktion, die die Kurzbeschreibung für den Aufruf eines Skripts
 # in der globalen Variable usage_text speichert
 set_usage_text() {
-    usage_text=$1
+    export usage_text=$1
     return 0
 }
+
+export -f set_usage_text
 

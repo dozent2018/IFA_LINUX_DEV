@@ -1,0 +1,36 @@
+#!/bin/bash     
+#title          :test_func_libs
+#description    :Demonstriert den Gebrauch von Funktionsbibliotheken
+#author         :Jochen Reinholdt
+#date           :20181115
+#version        :1.0    
+#usage          :./test_func_libs
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+source $FUNCPATH/util_functions
+source $FUNCPATH/math_functions
+source $FUNCPATH/file_functions
+
+# Test utility-Funktionen
+set_usage_text  
+err_usage
+set_usage_text "Vom Benutzer übergebener Text"
+err_usage
+set_usage_text
+usage_text="In der globalen Variablen gespeicherter Text"
+err_usage
+
+# Test mathe-Funktionen
+is_int 100 && echo 1 ist eine ganze Zahl
+is_int -1 && echo 1 ist eine ganze Zahl
+is_int g || echo g ist keine ganze Zahl
+is_int 6.5 || echo 6.5 ist keine ganze Zahl
+is_int 6,5 || echo 6,5 ist keine ganze Zahl
+
+
+# Test file-Funktionen
+file_exists /etc/passwd && echo /etc/passwd existiert
+file_exists /etc/garglebluzz || echo /etc/garglebluzz existiert nicht
+
