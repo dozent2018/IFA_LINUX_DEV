@@ -1,6 +1,6 @@
 #!/bin/bash     
 #title          :paramtest7
-#description    :Prüft, wieviele  Parameter übergeben wurden und gibt diese aus
+#description    :Prüft mehrere Dateien, die als Parameter übergeben wurden
 #author         :Jochen Reinholdt
 #date           :20180718
 #version        :1      
@@ -20,5 +20,9 @@ do
    if [ -f $parameter ]
    then
         echo Eintrag $parameter ist eine normale Datei
+   fi 
+   if [ -d $parameter ]
+   then
+        echo Eintrag $parameter ist ein Verzeichnis
    fi 
 done
