@@ -9,18 +9,16 @@
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-declare -A map
+threshold=$1
 
 # NR>1 im awk-Skript überspringt die 1. Zeile, gsub() ersetzt das %-Zeichen durch nichts
 for line in $(df -k | awk 'NR>1 {gsub("%",""); print $6 ":" $5 }')
 do
 	dir="${line%:*}"
 	pct="${line#*:}"
-	map[$dir]=$pct
-done
 
-# Ausgabe des Array map
-for key in ${!map[@]}
-do
-	echo mountpoint: $key % verwendet: ${map[$key]}
+    if [ $pct -gt threshold ]
+    then
+        echo Filesystem $dir ist zu ${pct}% voll!
+    fi
 done

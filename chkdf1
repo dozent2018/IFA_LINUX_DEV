@@ -1,7 +1,6 @@
 #!/bin/bash     
 #title          :chkdf1  
 #description    :Wertet die Spalten 5 (%verwendet)  und 6 (mount-point) in der Ausgabe von df aus. 
-#		 und speichert beide als ein Schlüssel/Wert-Paar in einem assozativen Array
 #author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
@@ -10,14 +9,12 @@
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-
-
-# map wird als assoziatives Array deklariert
-declare -A map
+threshold=$1
 
 # Wir benötigen die Werte 6. und 5. Spalte der Ausgabe von df -k 
 # (je ein Dateisystem und sein Füllungsgrad in %) nach entfernen der Überschriften
 # und des %-Zeichens. Zeichen ':' wird als Trenner dazwischen eingefügt
+
 for line in $(df -k | tail --lines=+2 | tr -d '%' | awk '{print $6 ":" $5}')
 do
     # Jede Zeile hat jetzt das Format Filesystem:Füllungsgrad
@@ -32,12 +29,8 @@ do
 	# hier: das Zeichen ':' und alles was davor kommt
 	pct=${line#*:}
 
-	# Zuweisung eines Schlüssel/Wert Paars an das Array map
-	map[$dir]=$pct
-done
-
-# Ausgabe des Array map
-for key in ${!map[@]}
-do
-	echo key: $key value: ${map[$key]}
+    if [ $pct -gt threshold ]
+    then
+        echo Filesystem $dir ist zu ${pct}% voll!
+    fi
 done

@@ -9,18 +9,16 @@
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-declare -A map
+threshold=$1
 
 # Variante mit tr, cut und sed
 for line in $( df -k | tr -s ' ' | cut -d' ' -f5,6 | sed -n '2,$ s/% /:/ p')
 do
 	pct=${line%:*}
     dir=${line#*:}
-	map[$dir]=$pct
-done
 
-# Ausgabe des Array map
-for key in ${!map[@]}
-do
-	echo mountpoint: $key % verwendet: ${map[$key]}
+    if [ $pct -gt threshold ]
+    then
+        echo Filesystem $dir ist zu ${pct}% voll!
+    fi
 done

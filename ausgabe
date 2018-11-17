@@ -1,0 +1,2 @@
+echo Standard-Ausgabe >&1
+echo Stderr-Ausgabe >&2
