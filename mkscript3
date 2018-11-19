@@ -5,6 +5,7 @@
 #               die Beschreibung, der Autor und die Version abgefragt.
 #               Wird das Argument -i nicht angegeben, werden diese Informationen
 #               wie bei der 1. Version aus den Argumenten 1 bis 4 abgeleitet 
+#               Mit -s <shell> kann eine andere Shell als die bash angegeben werden
 #               Zusätztlich ist es möglich, einen absoluten Pfad anzugeben. 
 #               Beispiel: mkscript /home/user1/sripts/scriptname "Ein Script" Ich 1.0
 #               Die Skriptdatei wir dann im angegebenen Verzeichnis (/home/user/scripts)
@@ -35,6 +36,9 @@ do
            ;;
     esac
 done
+
+# Positionieren auf den 1. Parameter nach den Optionen
+shift $(( OPTIND - 1 ))
 
 if [ "$interactive" == "yes" ]
 then
