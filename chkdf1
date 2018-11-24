@@ -1,36 +1,29 @@
 #!/bin/bash     
-#title          :chkdf1  
-#description    :Wertet die Spalten 5 (%verwendet)  und 6 (mount-point) in der Ausgabe von df aus. 
+#title          :chkdf1 
+#description    :Auswertung des Outputs von df -k, Alarm, wenn ein Schwellwert 
+#                für den Füllungsgrad eines der Dateisysteme überschritten wurde
 #author         :Jochen Reinholdt
-#date           :20180823
+#date           :20181123
 #version        :1.0    
-#usage          :chkdf1
+#usage          :./chkdf1
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-threshold=$1
 
-# Wir benötigen die Werte 6. und 5. Spalte der Ausgabe von df -k 
-# (je ein Dateisystem und sein Füllungsgrad in %) nach entfernen der Überschriften
-# und des %-Zeichens. Zeichen ':' wird als Trenner dazwischen eingefügt
+# Der Schwellwert in % wird dem Skript als einziger Parameter übergeben
+schwellwert=$1
 
-for line in $(df -k | tail --lines=+2 | tr -d '%' | awk '{print $6 ":" $5}')
+# Schleife über alle Zeilen in der Ausgabe des Kommandos
+# df -k, %-Zeichen mit tr entfernt, Überschrift mit tail entfernt
+# read akzeptiert mehrere Variablen. Bei Eingaben, die mehrere Wörter,
+# getrennt durch Leerzeichen enthalten, werden diese Wörter der Reihe
+# nach den Variablen hinter read zugewiesen
+df -k --output=pcent,target | tr -d '%' | tail -n+2 | while read pct_full filesystem
 do
-    # Jede Zeile hat jetzt das Format Filesystem:Füllungsgrad
-
-	# Dann wird bash Parameter Expansion verwendet um die beiden Werte auszuschneiden. 
-	# Alternativ wäre das auch mit sed möglich
-	# ${VARIABLE%MUSTER} entfernt MUSTER vom Ende des Textes in VARIABLE
-	# hier: das Zeichen ':' und alles was danach kommt
-	dir=${line%:*}
-
-	# ${VARIABLE#MUSTER} entfernt MUSTER vom Anfang des Textes in VARIABLE
-	# hier: das Zeichen ':' und alles was davor kommt
-	pct=${line#*:}
-
-    if [ $pct -gt threshold ]
+    if [ $pct_full -ge $schwellwert ]
     then
-        echo Filesystem $dir ist zu ${pct}% voll!
+        echo "Füllungsgrad von  $filesystem ist $pct_full Prozent"
     fi
 done
+

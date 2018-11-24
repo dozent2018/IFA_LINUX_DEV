@@ -1,24 +1,30 @@
 #!/bin/bash     
-#title          :chkdf1a
-#description    :Variante zu chkdf1 (siehe auch Kommentare dort) nur mit awk
+#title          :chkdf1a 
+#description    :Auswertung des Outputs von df -k, Alarm, wenn ein Schwellwert 
+#                für den Füllungsgrad eines der Dateisysteme überschritten wurde
 #author         :Jochen Reinholdt
-#date           :20180823
+#date           :20181123
 #version        :1.0    
-#usage          :chkdf1a
-#notes          :       
+#usage          :./chkdf1a
+#notes          :Variante zu chkdf1
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-threshold=$1
 
-# NR>1 im awk-Skript überspringt die 1. Zeile, gsub() ersetzt das %-Zeichen durch nichts
-for line in $(df -k | awk 'NR>1 {gsub("%",""); print $6 ":" $5 }')
+# Der Schwellwert in % wird dem Skript als einziger Parameter übergeben
+schwellwert=$1
+
+# Schleife über alle Zeilen in der Ausgabe des Kommandos
+# df -k, %-Zeichen mit tr entfernt, Überschrift mit tail entfernt
+# statt der 2 Variablen hinter read wird nur eine Variable verwendet
+# diese ist ein Array und die einzelnen Spalten sind nun über
+# die Werte in spalten_array[0] und spalten_array[1] verfügbar
+
+declare -a spalten_array
+df -k --output=pcent,target | tr -d '%' | tail -n+2 | while read -a spalten_array
 do
-	dir="${line%:*}"
-	pct="${line#*:}"
-
-    if [ $pct -gt threshold ]
+    if [ ${spalten_array[0]} -ge $schwellwert ]
     then
-        echo Filesystem $dir ist zu ${pct}% voll!
+        echo "Füllungsgrad von  ${spalten_array[1]} ist ${spalten_array[0]} Prozent"
     fi
 done
