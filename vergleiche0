@@ -1,0 +1,22 @@
+#!/bin/bash
+# Name        : vergleiche0
+# Beschreibung: Eine vereinfachte Lösung der Aufgabe 1.5
+#               ohne die Prüfung, ob beide Parameter eine
+#               Zahl sind. Vollständige Lösungen in : vergleiche0
+#               bis vergleiche3
+# Autor       : Jochen Reinholdt
+# Version     : 1.0
+# Datum       : 16.04.2019
+# #######################################################
+
+if [ $1 -eq $2 ]
+then
+    echo $1 und $2 sind gleich
+else
+    if [ $1 -gt $2 ]
+    then
+        echo $1 ist grösser als $2
+    else
+        echo $1 ist kleiner als $2
+    fi
+fi

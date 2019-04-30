@@ -10,10 +10,9 @@
 #============================================================================
 
 echo Anzahl Parameter: $#
-anzahl=$#
 zaehler=1
 
-while [ $zaehler -le $anzahl ]
+while [ $zaehler -le $# ]
 do
 	echo Parameter $zaehler: $1
 	let zaehler=$zaehler+1

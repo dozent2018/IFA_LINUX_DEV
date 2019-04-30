@@ -9,6 +9,15 @@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
+echo
+echo ------------------------------------------------------------------------------------
+echo "rechner liest 2 ganze Zahlen und eine Rechenoperation ein und liefert das Ergebnis"
+echo "Gültige Operationen: +, -, x, * /, %, mod"
+echo "Beispiele: 1 + 9 oder 22 x 10 oder 100 / 4"
+echo "Verlassen mit ENDE"
+echo ------------------------------------------------------------------------------------
+echo
+
 while read wert1 op wert2
 do
     # Bei Eingabe von ENDE Schleife beenden
@@ -26,7 +35,7 @@ do
     case $op in
         +)        let ergebnis=$wert1+$wert2 ;;
         -)        let ergebnis=$wert1-$wert2 ;;
-        x|X)      let ergebnis=$wert1*$wert2 ;;
+        x|X|*)      let ergebnis=$wert1*$wert2 ;;
         /)        let ergebnis=$wert1/$wert2 ;;
         %|mod)    let ergebnis=$wert1%$wert2 ;;
         *)        ergebnis="Unbekannte Operation"

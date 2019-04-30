@@ -11,13 +11,14 @@
 
 file=$1
 
+# Schreibweise 1 für OR mit -o verknüpfte Prüfungen in einem test
 if [ -f $file -o -d $file ]
 then
    echo "Datei $file: normale Datei oder Verzeichnis"
+# Schreibweise 2 für OR mit 2 tests, mit || verknüpft
 elif [ -b $file ] || [ -c $file ]
 then
    echo "Datei $file: Character- oder Block-Gerätedatei"
 else
    echo "weder noch"
 fi
-
