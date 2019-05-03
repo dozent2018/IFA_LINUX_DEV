@@ -1,0 +1,9 @@
+if [ $1 -eq $2 ]
+then
+    echo $1 und $2 sind gleich
+elif [ $1 -gt $2 ]
+then
+    echo $1 ist grösser als $2
+else
+    echo $1 ist kleiner als $2
+fi
