@@ -4,50 +4,110 @@
 #                Mountpunkt und einen Schwellenwert für den Füllungsgrad enthält. 
 #                Format der Zeilen im Konfigurationsfile ist Mountpoint:Schwellenwert. 
 #                Prüft dann in regelmässigen Zeitabständen mit df -k, ob der Schwellenwert 
-#                für einen der Mountpunkte überschritten wurde und schickt in diesem Fall 
-#                ein Mail an root. Optionen: 
+#                für einen der Mountpunkte überschritten wurde und gibt in diesem Fall 
+#                eine Meldung aus. Optionen: 
 #                -f <Pfad zum Konfigurationsfile> 
 #                -i <Intervall in Sekunden>
 #                Defaultwerte: 
 #                Ohne -f heisst das Konfigurationsfile chkdf.cfg und stehlt im aktuellen Verzeichnis
 #                Ohne -i ist das Zeitintervall 5 Minuten = 300 Sekunden
+#                Mit dem Schalter -h wird ein kurzer Hilfetext ausgegeben.
 #author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :chkdf1b [-f Konfigurationsfile] [-i Zeitintervall in sec. ]
+#usage          :chkdf2 [-f Konfigurationsfile] [-i Zeitintervall in sec. ]
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-configfile=./chkdf.cfg      # Default-Wert für die Konfigurationsdatei
-interval=300                # Default-Wert für das Zeitintervall in Sekunden
-declare -A schwellwerte     # Assoziatives Array für die Speicherung der Konfiguration
+config_file=chkdf.cfg
+interval=300
+declare -A config_array
 
-# Konfigurationsdatei lesen und in einem assoziativen Array speichern
-# Schlüssel ist ein Mountpoint in der fstab, Wert der festgelegte Schwellenwert
-# Das Format jeder Zeile im File ist Mountpoint:Schwellenwert
-while read configline 
-do
-    # Der erste Teil vor dem : ist das gemountete Dateisystem
-    filesystem=${configline%:*}
-    # Der zweite Teil nach dem : ist das gemountete Dateisystem
-	schwellwert=${configline#*:}
-	schwellwerte[$filesystem]=$schwellwert
-done < $configfile
+usage() {
+    echo "Benutzung: basename $0 [-f Konfigurationsfile] [-i Zeitintervall in sec. ]"
+}
 
-for i in ${!schwellwerte[@]}
-do
-    echo mountpunkt $i: ${schwellwerte[$i]}
-done    
+help() {
+    usage
+    echo Überprüfung ob der Füllungsgrad ausgewählter Dateisysteme einen
+    echo Schwellenwert überschreitet.Die zu überprüfung vorgesehenen 
+    echo Dateisysteme  werden in einem Konfigurationsfile angegeben
+    echo Das Konnfigurationsfile enthält Zeilen in der Form 
+    echo "Mountpoint Schwellenwert in %". Beispiel:
+    echo     / 80
+    echo     /home 65
+    echo     /var 75
+    echo
+    echo Wenn das Konfigurationsfile nicht mit -f angegeben wurde, wird 
+    echo chkdf.cfg im aktuellen Verzeichnis gesucht. 
+    echo Das Zeitintervall nach -i ist die Zeit in Sekunden, die verstreicht,
+    echo bevor eine erneute Prüfung stattfindet. Wird kein Intervall angegeben
+    echo wird die Prüfung nur einmal ausgeführt.
+}
 
-# Variante mit tr, cut und sed
-for dfline in $( df -k | tr -s ' ' | cut -d' ' -f5,6 | sed -n '2,$ s/% /:/ p')
-do
-    mountpunkt=${dfline#*:}
-    proz_voll=${dfline%:*}
-    # Wenn zu einem Mountpunkt ein Schwellwert existiert und er erreicht oder überschritten wird
-    if [ -n "${schwellwerte[$mountpunkt]}" ] && [ $proz_voll -ge ${schwellwerte[$mountpunkt]} ]
+read_config_file() {
+    # Prüfung, ob das Konfigurationsfile existiert
+    if [ -f $config_file ] && [ -r $config_file ]
     then
-        echo Alarm: $mountpunkt ist zu $proz_voll % voll
+        # Einlesen der Konfigurationsdatei
+        while read mount pct
+        do
+            config_array[$mount]=$pct
+        done < $config_file
+        return 0
+    else
+        echo Konfigurationsfile $config_file kann nicht gelesen werden
+        usage
+        return 1
     fi
+}
+
+# Es sind entweder 0, 1, 2 oder 4 Argumente möglich
+if ! [ $# -eq 0 -o $# -eq 1 -o $# -eq 2 -o $# eq 4 ]
+then
+    usage
+    exit 1
+fi 
+
+while getopts f:i: opt 2>/dev/null
+do
+    case $opt in
+        f) config_file=$OPTARG 
+           if ! [ -f $config_file ]
+           then
+               echo $config_file nicht gefunden
+               usage
+               exit 1 
+           fi
+           ;;
+        i) interval=$OPTARG
+           if ! [ $interval -eq $interval ] 2>/dev/null
+           then
+               echo $interval ist keine ganze Zahl
+               usage
+               exit 1 
+           fi
+           ;;
+        ?) echo "$opt: Unbekannte Option" 
+           usage
+           ;;
+    esac
+done
+
+read_config_file
+
+# Die Prüfung läuft in einer Endlosschleife. Abbruch mit ^C oder kill PID
+while true
+do
+    for mount in ${!config_array[@]}
+    do
+        pct_full=$(df --output=pcent $mount | tr -d '%' | tail -n+2)
+        if [ $pct_full -ge ${config_array[$mount]} ]
+        then 
+            echo "Alarm: $mount ist zu $pct_full% voll"     
+        fi
+    done
+    # Warten, bis die Zeit in $interval Sekunden abgelaufen ist
+    sleep $interval
 done

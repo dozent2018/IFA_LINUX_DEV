@@ -1,5 +1,5 @@
 #!/bin/bash     
-#title          :chkdf1a 
+#title          :chkdf1-variante1 
 #description    :Auswertung des Outputs von df -k, Alarm, wenn ein Schwellwert 
 #                für den Füllungsgrad eines der Dateisysteme überschritten wurde
 #author         :Jochen Reinholdt
