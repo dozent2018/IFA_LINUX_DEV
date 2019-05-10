@@ -19,3 +19,4 @@ do
 	let zaehler=$zaehler+1
 	shift
 done
+
