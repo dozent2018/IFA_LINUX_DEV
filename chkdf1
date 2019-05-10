@@ -19,7 +19,7 @@ schwellwert=$1
 # read akzeptiert mehrere Variablen. Bei Eingaben, die mehrere Wörter,
 # getrennt durch Leerzeichen enthalten, werden diese Wörter der Reihe
 # nach den Variablen hinter read zugewiesen
-df -k --output=pcent,target | tr -d '%' | tail -n+2 | while read pct_full filesystem
+df -k --output=pcent,target | tr '%' ' ' | tail -n+2 | while read pct_full filesystem
 do
     if [ $pct_full -ge $schwellwert ]
     then

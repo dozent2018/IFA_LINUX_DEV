@@ -1,0 +1,10 @@
+# papagei2 liest eine Zeile und gibt sie
+# wieder aus, bis ENDE eingegeben wird
+while read -p "Erzähl mir was: " zeile
+do
+    if [ "$zeile" = "ENDE" ]
+    then
+        break
+    fi
+    echo $zeile
+done
