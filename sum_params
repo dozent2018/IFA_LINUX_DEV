@@ -1,0 +1,23 @@
+#!/bin/bash     
+#title          :sum_params
+#description    :Prüft, wieviele  Parameter übergeben wurden und summiert sie
+#author         :Jochen Reinholdt
+#date           :20180618
+#version        :1      
+#usage          :./paramtest5 parameterliste
+#notes          :Benutzt while-schleife, let und shift
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+anzahl=$#
+zaehler=1
+ergebnis=0
+
+while [ $zaehler -le $anzahl ]
+do
+    let ergebnis=$ergebnis+$1
+	let zaehler=$zaehler+1
+	shift
+done
+echo $ergebnis
+
