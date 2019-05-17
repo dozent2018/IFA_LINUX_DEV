@@ -21,7 +21,7 @@
 #============================================================================
 
 config_file=chkdf.cfg
-interval=300
+interval=0
 declare -A config_array
 
 usage() {
@@ -29,9 +29,10 @@ usage() {
 }
 
 help() {
+    echo ######################################################################
     usage
     echo Überprüfung ob der Füllungsgrad ausgewählter Dateisysteme einen
-    echo Schwellenwert überschreitet.Die zu überprüfung vorgesehenen 
+    echo Schwellenwert überschreitet. Die zu Überprüfung vorgesehenen 
     echo Dateisysteme  werden in einem Konfigurationsfile angegeben
     echo Das Konnfigurationsfile enthält Zeilen in der Form 
     echo "Mountpoint Schwellenwert in %". Beispiel:
@@ -44,10 +45,11 @@ help() {
     echo Das Zeitintervall nach -i ist die Zeit in Sekunden, die verstreicht,
     echo bevor eine erneute Prüfung stattfindet. Wird kein Intervall angegeben
     echo wird die Prüfung nur einmal ausgeführt.
+    echo ######################################################################
 }
 
 read_config_file() {
-    # Prüfung, ob das Konfigurationsfile existiert
+    # Prüfung, ob das Konfigurationsfile existiert und lesbar ist
     if [ -f $config_file ] && [ -r $config_file ]
     then
         # Einlesen der Konfigurationsdatei
@@ -63,14 +65,7 @@ read_config_file() {
     fi
 }
 
-# Es sind entweder 0, 1, 2 oder 4 Argumente möglich
-if ! [ $# -eq 0 -o $# -eq 1 -o $# -eq 2 -o $# eq 4 ]
-then
-    usage
-    exit 1
-fi 
-
-while getopts f:i: opt 2>/dev/null
+while getopts f:i:h opt 2>/dev/null
 do
     case $opt in
         f) config_file=$OPTARG 
@@ -88,6 +83,9 @@ do
                usage
                exit 1 
            fi
+           ;;
+        h) help
+           exit 0
            ;;
         ?) echo "$opt: Unbekannte Option" 
            usage
@@ -110,4 +108,12 @@ do
     done
     # Warten, bis die Zeit in $interval Sekunden abgelaufen ist
     sleep $interval
+
+    if [ $interval -eq 0 ]
+    then
+        break
+    fi
 done
+
+# Exit code 0 bei Erfolg
+exit 0
