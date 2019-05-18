@@ -1,11 +1,11 @@
 export zeilen=0
 echo Zunächst Shell $BASHPID
-cat textdatei | while read eimer
+cat textdatei | while read zeile
 do
-    echo Subshell $BASHPID
-    echo $eimer
+
+    [ $zeilen -eq 0 ] && echo jetzt in der Subshell Nr. $BASHPID
     let zeilen=zeilen+1
-    echo $zeilen
+    echo $zeilen $zeile
 done
 echo Wieder in Shell $BASHPID
 echo $zeilen gelesen
