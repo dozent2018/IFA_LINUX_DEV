@@ -9,6 +9,8 @@
 #                -f <Pfad zum Konfigurationsfile> 
 #                -i <Zeit in Sekunden, nach der die Prüfung wiederholt wird>
 #                -h Hilfetext ausgeben
+#                Wenn keine Konfigurationsdatei angegeben wurde, wird die Datei 
+#                chkdf.cfg im aktuellen Verzeichnis gesucht.
 #                Ohne -i <Sekunden> wird die Prüfung nur einmal ausgeführt.
 #author         :Jochen Reinholdt
 #date           :20180823
@@ -18,13 +20,13 @@
 #bash_version   :4.4.12(1)-release
 #============================================================================
 
-config_file=""
+config_file=chkdf.cfg
 interval=0
 declare -A config_array
 
 usage() {
     command=`basename $0`
-    echo "Benutzung: $command -f Konfigurationsfile [-i Zeitintervall_in_sec. ] [-h]"
+    echo "Benutzung: $command [-f Konfigurationsfile] [-i Zeitintervall_in_sec. ] [-h]"
     echo "           Hilfe mit $command -h"
 }
 
@@ -35,10 +37,14 @@ help() {
     echo "Schwellenwert überschreitet. Die zu Überprüfung vorgesehenen "
     echo "Dateisysteme  werden in einem Konfigurationsfile angegeben"
     echo "Das Konfigurationsfile enthält Zeilen in der Form "
-    echo "Mountpoint Schwellenwert_in_%. Beispiel:"
+    echo "Mountpoint Schwellenwert_in_%. "
+    echo "Beispiel:"
     echo "    / 80"
     echo "    /home 65"
     echo "    /var 75"
+    echo
+    echo "Wenn keine Konfigurationsdatei angegeben wurde,"
+    echo "wird die Datei chkdf.cfg im aktuellen Verzeichnis gesucht."
     echo
     echo "Das Zeitintervall nach -i ist die Zeit in Sekunden, die verstreicht,"
     echo "bevor eine erneute Prüfung stattfindet. Die Prüfung wird dann endlos"
@@ -75,28 +81,30 @@ is_int() {
     fi
 }
 
-# Kommandozeilen-Optionen auswerten
-while getopts f:i:h opt 2>/dev/null
+# Kommandozeilen-Optionen auswerten 
+# Der 1. ':' bewirkt, das getopts keine Fehlermeldungen ausgibt. Die ':' nach den Options-
+# buchstaben f und i bedeuten, dass dort ein weiteres Argument erwartet wird
+while getopts :f:i:h opt 
 do
     case $opt in
         f) config_file=$OPTARG 
-           if ! read_config $OPTARG 
-           then
-               echo Konfigurationsfile $config_file kann nicht gelesen werden >&2
-               usage
-               exit 1 
-           fi
            ;;
         i) interval=$OPTARG
            if ! is_int $OPTARG
            then
-               echo $interval ist keine ganze Zahl >&2
                usage
                exit 1 
            fi
            ;;
         h) help
            exit 0
+           ;;
+        :) # Wenn bei -f und -i kein zusätzliches Argument 
+           # angegeben wurde, steht : in opt und der 
+           # Optionsbuchstabe in OPTARG
+           echo "Fehlendes Argument nach -$OPTARG"
+           usage
+           exit 1
            ;;
         ?) echo "$opt: Unbekannte Option" >&2
            usage
@@ -105,28 +113,32 @@ do
     esac
 done
 
-if [ -z $config_file ]
+# Lesen der Konfigurationsdatei (Default: chkdf.cfg im aktuellen Verzeichnis)
+if ! read_config $config_file
 then
-    echo "Keine Konfigurationsatei angegeben"
+    echo "Konfigurationsdatei konnte nicht gelesen werden"
     usage
     exit 1
 fi
-
+ 
 # Die Prüfung läuft in einer Endlosschleife. Abbruch mit ^C oder kill PID
 while true
 do
+    # Schleife über alle Keys (= mountpoints) in config_array
     for mountpoint in ${!config_array[@]}
     do
+        # df wird nur für jeweils einen mountpoint aufgerufen
         pct_full=$(df --output=pcent $mountpoint | tr -d '%' | tail -n+2)
         if [ $pct_full -gt ${config_array[$mountpoint]} ]
         then 
             echo "Alarm: $mountpoint ist zu $pct_full% voll. Schwellwert: ${config_array[$mountpoint]}"     
         fi
     done
+
     # Warten, bis die Zeit in $interval Sekunden abgelaufen ist
     sleep $interval
 
-    # Wenn $interval den Wert 0 hat, wird die Schleife nach dem 1. Durchlauf beendet
+    # Wenn $interval den Wert 0 hat, wird die Schleife beendet
     if [ $interval -eq 0 ]
     then
         break
