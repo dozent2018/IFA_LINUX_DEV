@@ -26,7 +26,7 @@ version=$4
 
 # Prüfen, ob bereits eine Datei gleichen Namens existiert
 if [ -e $title ] ; then 
-    echo "Die Datei "$title" existert bereits." 
+    echo "Die Datei $title existert bereits." 
     echo "Bitte wählen Sie einen anderen Namen."
     exit 2
 fi

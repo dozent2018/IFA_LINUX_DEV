@@ -49,7 +49,8 @@ dir1list=$( ls -pa $dir1 | grep -v / )
 dir2list=$( ls -ap $dir2 | grep -v / )
 
 
-echo test function is_el_of_arr:
+echo
+echo test is_el_of_arr
 echo
 
 for name in ${dir1list[@]}
@@ -77,53 +78,46 @@ do
 done
 
 echo
-echo test with associative array:
+echo test is_el_of_AARR
+echo
 
-unset dir1list
-unset dir2list
 declare -A dir1list
 declare -A dir2list
-echo ${!dir1list[@]}
-echo ${!dir2list[@]}
 
 # populate dir1list with the results of ls -p
 # use filename as key and as value
 for name in $(ls -pa $dir1 | grep -v / )
 do
-    dir1list[$name]=$name
+    $dir1list[$name]=$name
 done
-# show all keys
-# echo ${!dir1list[@]}
 
 # populate dir2list with the results of ls -p
 # use filename as key and as value
 for name in $(ls -pa $dir2 | grep -v / )
 do
-    dir2list[$name]=$name
+    $dir2list[$name]=$name
 done
-# show all keys
-# echo ${!dir2list[@]}
 
 # use direct test if element exists in associative array 
-for name in ${!dir1list[@]}
+for name in ${dir1list[@]}
 do
-    if ! [[ ${dir2list[$name]} ]]
+    if ! [ ${dir2list[$name]} ]
     then
         echo "only in ${dir1}: $name"
     fi
 done
 
-for name in ${!dir2list[@]}
+for name in ${dir2list[@]}
 do
-    if ! [[ ${dir1list[$name]} ]]
+    if ! [ ${dir1list[$name]} ]
     then
         echo "only in ${dir2}: $name"
     fi
 done
 
-for name in ${!dir2list[@]}
+for name in ${dir2list[@]}
 do
-    if [[ ${dir1list[$name]} ]]
+    if ! [ ${dir1list[$name]} ]
     then
         echo "in both: $name"
     fi
