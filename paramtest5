@@ -9,16 +9,15 @@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-echo Anzahl Parameter: $#
+zaehler=0
+echo "Anzahl Parameter: $#"
 
-# Achtung: shift verändert auch den wert $#, also sichern wir ihn in anzahl
-anzahl=$#
-zaehler=1
+# Achtung: shift verändert auch den Wert $#
 
-while [ $zaehler -le $anzahl ]
+while [ $# -gt 0 ]
 do
-	echo Parameter $zaehler: $1
 	let zaehler=$zaehler+1
+	echo "Parameter $zaehler: $1"
 	shift
 done
 

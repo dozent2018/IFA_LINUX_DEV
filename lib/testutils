@@ -1,0 +1,26 @@
+# setup_test() setzt die globalen Variablen
+# testcase, expected_output und expected_return
+
+setup_test() {
+    testcase="$1"
+    expected_output="$2"
+    expected_return="$3"
+    echo "Setting up test case $testcase"
+}
+
+# report_test gibt die Ergebniss aus:
+report_test() {
+    if [ "$test_return" -eq "$expected_return" ]; then
+        return_result="Pass"
+    else
+        return_result="Fail"
+    fi
+    if [ "$test_output" = "expected_output" ]; then
+        output_result="Pass"
+    else
+        output_result="Fail"
+    fi
+    echo "************* $testcase ****************"
+    echo "Testcase $testcase return: ${return_result}. output: ${output_result}." 
+    echo
+}

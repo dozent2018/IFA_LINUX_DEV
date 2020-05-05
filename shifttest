@@ -1,0 +1,10 @@
+# skript shifttest:
+echo '$1 ist:' $1  '$# ist:' $#
+shift
+echo '$1 ist:' $1  '$# ist:' $#
+shift
+echo '$1 ist:' $1  '$# ist:' $#
+shift
+echo '$1 ist:' $1  '$# ist:' $#
+shift
+

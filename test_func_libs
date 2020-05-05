@@ -9,22 +9,46 @@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-source $FUNCPATH/util_functions
-source $FUNCPATH/math_functions
-source $FUNCPATH/file_functions
+# FNCPATH sollte in der Umgebung gesetzt werden, Default: ./lib
+FNCPATH=${FNCPATH:-./lib}
+source $FNCPATH/util_functions
+source $FNCPATH/testutils
+source $FNCPATH/math_functions
+source $FNCPATH/file_functions
 
 # Test utility-Funktionen
-set_usage_text  
-err_usage
-set_usage_text "Vom Benutzer übergebener Text"
-err_usage
+
+# testcase util-001: err_usage
+# Variable usage_text ist nicht gesetzt
+setup_test util-001 'usage: test_func_libs No usage text set\n' 0
+unset usage_text
+test_output=$(err_usage) 
+test_return=$?
+echo -n +
+echo -n $test_output
+echo -n +
+report_test
+exit
+
+# test util-002: 
+# 1. set_usage_text ohne Parameter 
+test_output=$(set_usage)
+# 2. err_usage ohne Parameter
+test_output=$(err_usage)
 set_usage_text
-usage_text="In der globalen Variablen gespeicherter Text"
 err_usage
 
+# test util-003: set_usage_text und err_usag
+set_usage_text "Vom Benutzer übergebener Text"
+err_usage
+
+usage_text="Variable usage_text im script gesetzt"
+err_usage
+set_usage_text
+
 # Test mathe-Funktionen
-is_int 100 && echo 1 ist eine ganze Zahl
-is_int -1 && echo 1 ist eine ganze Zahl
+is_int 100 && echo test m1 passed
+is_int -1 &&   
 is_int g || echo g ist keine ganze Zahl
 is_int 6.5 || echo 6.5 ist keine ganze Zahl
 is_int 6,5 || echo 6,5 ist keine ganze Zahl

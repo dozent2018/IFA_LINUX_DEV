@@ -12,19 +12,19 @@
 
 # Prüft, ob das erste Argument der Funktion der Name eines Verzeichniseintrages ist
 entry_exists() {
-    if test -e  $1
+    if test -e  $1  2>/dev/null
     then
 	    return 0
     fi
 	return 1
 }
 
-export -f file_exists
+export -f entry_exists
 
 
 # Prüft, ob für das erste Argument der Funktion Schreibrecht besteht
 is_writable() {
-    if test -w  $1
+    if test -w  $1  2>/dev/null
     then
 	    return 0
     fi
@@ -36,7 +36,7 @@ export -f is_writable
 
 # Prüft, ob für das erste Argument der Funktion Ausführungsrecht besteht
 is_executable() {
-    if test -w  $1
+    if test -w  $1  2>/dev/null
     then
 	    return 0
     fi
@@ -46,24 +46,36 @@ is_executable() {
 export -f is_executable
 
 # Prüft, ob das erste Argument der Funktion der Name eines Verzeichnisses ist
-is_directory() {
-    if test -d  $1
+is_dir() {
+    if test -d  $1  2>/dev/null
     then
 	    return 0
     fi
 	return 1
 }
 
-export -f is_directory
+export -f is_dir
 
 # Prüft, ob das erste Argument der Funktion der Name einer normalen Datei ist
 is_normal_file() {
-    if test -f  $1
-    then
-	    return 0
-    fi
-	return 1
+  if test -f  $1  2>/dev/null
+  then
+    return 0
+  fi
+  return 1
 }
 
 export -f is_normal_file
 
+# Prüft, ob das erste Argument der Funktion der Name 
+# eines Verzeichnisses ist und ob Schreibrecht besteht
+# nutzt die Funktionen is_dir und is_writable
+is_writable_dir() {
+  if is_dir $1 && is_writable $1
+  then
+    return 0
+  fi
+  return 1
+}
+
+# export –f is_writable_dir

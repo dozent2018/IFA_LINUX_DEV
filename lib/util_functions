@@ -9,31 +9,32 @@
 #bash_version   :3.2.57(1)-release
 #============================================================================
 
-# err_usage gibt eine Kurzbeschreibung für den Aufruf eines Skripts aus.
-# Diese kann als 1. Parameter angegeben werden. Wenn er nicht angegeben wird,
-# aber die Variable usage_text gesetzt ist, gibt err_usage deren Inhalt aus
-# Wenn Sie gesetzt ist, einen Ersatztext
+# err_usage gibt eine Kurzbeschreibung für den Aufruf eines Skripts 
+# auf stderr aus.
+# Ein text kann als 1. Parameter angegeben werden. 
+# Wenn er nicht angegeben wird, aber die Variable usage_text gesetzt ist, 
+# gibt err_usage deren Inhalt aus Wenn nicht, einen Ersatztext
 
 err_usage () {
-    if [ -n "$1" ]
+    local text=
+    if [ $# -eq 1 ]           # text-Parameter existiert
     then
-        $usage_text="$1"
-    elif [ -z "$usage_text" ]
+        text="$1"
+    elif [ -n "$usage_text" ] # ersatzweise text aus $usage_text
     then
-        usage_text="No usage information available"
+        text="$usage_text"
+    else                      # erstzweise ein Standardtext
+        text="No usage text set"
     fi
-    echo "usage: $(basename $0) $usage_text" >&2
+    echo "usage: $(basename $0) $text" >&2
     return 0
 }
-
 export -f err_usage
 
 # Funktion, die die Kurzbeschreibung für den Aufruf eines Skripts
 # in der globalen Variable usage_text speichert
 set_usage_text() {
     export usage_text=$1
-    return 0
 }
-
 export -f set_usage_text
 

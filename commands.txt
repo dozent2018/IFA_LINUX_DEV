@@ -1,0 +1,4 @@
+# commands.txt enthält bash-Anweisungen
+whoami
+echo "5 mal 5 ergibt  $(( 5 * 5 ))"
+echo "100 - 1 ergibt  $(( 100 - 1 ))"
