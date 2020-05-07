@@ -6,7 +6,7 @@
 #version        :1.0    
 #usage          :./readconfig1c.sh
 #notes          :       
-#bash_version   :3.2.57(1)-release
+#bash_version   : 4
 #============================================================================
 
 declare -A array
