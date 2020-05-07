@@ -1,0 +1,49 @@
+# setup_test() setzt die globalen Variablen
+# testcase, expected_output und expected_return
+#
+
+setup_test() {
+    testcase="$1"
+    expected_output="$2"
+    expected_return="$3"
+    expected_filename="$4"
+    echo "Setting up test case $testcase"
+}
+
+# report_test gibt die Ergebniss aus:
+report_test() {
+    if [ "$test_return" -eq "$expected_return" ]; then
+        return_result="Pass"
+    else
+        return_result="Fail"
+    fi
+    if [ "$test_output" = "expected_output" ]; then
+        output_result="Pass"
+    else
+        output_result="Fail"
+    fi
+    echo "************* $testcase ****************"
+    echo "Testcase $testcase return: ${return_result}. output: ${output_result}." 
+    # expected_filename und test_filename gesetzt sind:
+    if [ -n "$expected_filename" -a -n "$test_filename" ]  
+    then
+        if diff "$expected_filename" "$test_filename" >/dev/null 2>&1
+        then
+            file_result="Pass"
+        else
+            file_result="Fail"
+        fi
+    fi
+    echo "Testcase $testcase output file content : ${file_result}." 
+    echo
+}
+
+teardown_test() {
+    unset testcase
+    unset expected_output
+    unset test_output
+    unset expected_return
+    unset test_return
+    unset expected_filename
+    unset test_filename
+}

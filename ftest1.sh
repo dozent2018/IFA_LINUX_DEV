@@ -1,10 +1,10 @@
 #!/bin/bash     
-#title          :test_func_libs
+#title          :ftest1.sh
 #description    :Demonstriert den Gebrauch von Funktionsbibliotheken
 #author         :Jochen Reinholdt
 #date           :20181115
 #version        :1.0    
-#usage          :./test_func_libs
+#usage          :./ftest1.sh
 #notes          :       
 #bash_version   :3.2.57(1)-release
 #============================================================================
@@ -20,13 +20,12 @@ source $FNCPATH/file_functions
 
 # testcase util-001: err_usage
 # Variable usage_text ist nicht gesetzt
-setup_test util-001 'usage: test_func_libs No usage text set\n' 0
+setup_test util-001 "" "usage: $(basename $0) No usage text set" 0 /etc/hosts
 unset usage_text
-test_output=$(err_usage) 
+test_filename=~/.bashrc
+test_stdout=
+test_stderr=$(err_usage 2>&1)
 test_return=$?
-echo -n +
-echo -n $test_output
-echo -n +
 report_test
 exit
 
