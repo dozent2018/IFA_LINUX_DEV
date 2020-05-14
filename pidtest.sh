@@ -1,7 +1,5 @@
 #!/bin/bash     
-#title          :pidtest
-#description    :gibt die Prozess-ID, die Parent-Prozess-ID,
-#                sowie die Variablen TESTVAR1 und TESTVAR2 aus
+# pidtest.sh : gibt PID, PPID  sowie die Variablen TESTVAR1 und TESTVAR2 aus
 #                vor Ausführung folgendes eingeben:
 #                TESTVAR1=T1; export TESTVAR1
 #                TESTVAR2=T2
