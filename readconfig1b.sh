@@ -1,12 +1,10 @@
 #!/bin/bash     
-#title          :readconfig1a
+# readconfig1b.sh : Variante zu readconfig1a.sh
 #description    :Lesen einer Datei mit 2 Spalten, die durch ein Trennzeichen 
 #		         getrennt sind. Einfügen in ein assoziatives Array: 
 #		         Spalte 1 ist der Schlüssel, Spalte 2 der Wert
-#author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :readconfig -d delimiting_character config_file
 #notes          :diese Lösung verwendet Bash-Parameterexpansion, um die Spalten der Datei zu lesen
 #bash_version   :4.4.12(1)-release
 #============================================================================

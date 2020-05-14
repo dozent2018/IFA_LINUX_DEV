@@ -1,10 +1,8 @@
 #!/bin/bash     
-#title          :count_until.sh
+# count_until.sh : Demonstration until-Schleife
 #description    :Zählt vom Wert in $1 auf 0 herunter und gibt dann Start! aus
-#author         :Jochen Reinholdt
 #date           :20180619
 #version        :1      
-#usage          :./count_until.sh
 #notes          :       
 #bash_version   :3.2.57(1)-release
 #============================================================================

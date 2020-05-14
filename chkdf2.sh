@@ -1,5 +1,5 @@
 #!/bin/bash     
-#title          :chkdf2
+# chkdf2.sh : Ähnlich chkdf1.sh, mit Konfoigurationsfile und Optionen
 #description    :Liest beim Start ein Konfigurationsfile ein, das jeweils einen 
 #                Mountpunkt und einen Schwellenwert für den Füllungsgrad enthält. 
 #                Format der Zeilen im Konfigurationsfile ist Mountpoint:Schwellenwert. 
@@ -12,10 +12,8 @@
 #                Wenn keine Konfigurationsdatei angegeben wurde, wird die Datei 
 #                chkdf.cfg im aktuellen Verzeichnis gesucht.
 #                Ohne -i <Sekunden> wird die Prüfung nur einmal ausgeführt.
-#author         :Jochen Reinholdt
 #date           :20180823
 #version        :1.0    
-#usage          :chkdf2 -f Konfigurationsfile [-i Zeitintervall in sec. ]
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
@@ -26,8 +24,8 @@ declare -A config_array
 
 usage() {
     command=`basename $0`
-    echo "Benutzung: $command [-f Konfigurationsfile] [-i Zeitintervall_in_sec. ] [-h]"
-    echo "           Hilfe mit $command -h"
+    echo "Benutzung: $command [-f Konfigurationsfile] [-i Zeitintervall_in_sec. ] [-h]" >&2
+    echo "           Hilfe mit $command -h" >&2
 }
 
 help() {
@@ -102,12 +100,11 @@ do
         :) # Wenn bei -f und -i kein zusätzliches Argument 
            # angegeben wurde, steht : in opt und der 
            # Optionsbuchstabe in OPTARG
-           echo "Fehlendes Argument nach -$OPTARG"
+           echo "Fehlendes Argument nach -$OPTARG" >&2
            usage
            exit 1
            ;;
-        ?) echo "$opt: Unbekannte Option" >&2
-           usage
+        ?) usage
            exit 1
            ;;
     esac

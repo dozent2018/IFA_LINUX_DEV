@@ -1,11 +1,7 @@
 #!/bin/bash     
-#title          :chkdf1 
-#description    :Auswertung des Outputs von df -k, Alarm, wenn ein Schwellwert 
-#                für den Füllungsgrad eines der Dateisysteme überschritten wurde
-#author         :Jochen Reinholdt
+# chkdf1.sh : Auswertung des Outputs von df, Alarm, wenn Schwellwert überschritten ist
 #date           :20181123
 #version        :1.0    
-#usage          :./chkdf1
 #notes          :       
 #bash_version   :4.4.12(1)-release
 #============================================================================
@@ -19,7 +15,7 @@ schwellwert=$1
 # read akzeptiert mehrere Variablen. Bei Eingaben, die mehrere Wörter,
 # getrennt durch Leerzeichen enthalten, werden diese Wörter der Reihe
 # nach den Variablen hinter read zugewiesen
-df -k --output=pcent,target | tr '%' ' ' | tail -n+2 | while read pct_full filesystem
+df --output=pcent,target | tr '%' ' ' | tail -n+2 | while read pct_full filesystem
 do
     if [ $pct_full -ge $schwellwert ]
     then

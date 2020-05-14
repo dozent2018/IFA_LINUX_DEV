@@ -1,10 +1,9 @@
 #!/bin/bash     
-#title          :readconfig1c.sh
+# readconfig1c.sh : Variante zu readconfig1a.sh mit IFS=
 #description    :Lesen einer Konfigurationsdatei in ein Array
 #author         :Patrick Raths
 #date           :20200507
 #version        :1.0    
-#usage          :./readconfig1c.sh
 #notes          :       
 #bash_version   : 4
 #============================================================================
