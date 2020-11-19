@@ -14,7 +14,7 @@ do
 	for (( spalte=1; spalte <= $zeile; spalte++ ))
 	do
         # Ein Stern zur Zeit wird ausgegeben
-		echo -n \*
+		echo -n "* "
 	done
 	echo
 done
