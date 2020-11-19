@@ -1,6 +1,6 @@
 #!/bin/bash
-# mkstruct1.sh :  Version mit globaler Variable
-# nutzt eine Variable "kurs" für den Kursnamen und den Speicherort
+# mkstructo.sh 
+# Die erste einfache Version
 
 mkdir Kurs
 mkdir Kurs/block1
