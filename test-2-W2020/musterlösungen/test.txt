@@ -1,5 +1,0 @@
-1 Zeilentext 1
-002 Zeilentext 2
-3. Zeilentext 3
-4) Zeilentext 4
-Zeilentext 5

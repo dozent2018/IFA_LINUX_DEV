@@ -1,8 +1,0 @@
-# Funktionsbibliothek, die in aufgabe-006.sh benutzt wird
-# *************** Ihre Funktion am_i_root: **************
-am_i_root() {
-    if [ $(id -u) -eq 0 ]; then
-        return 0
-    fi
-    return 1
-}
