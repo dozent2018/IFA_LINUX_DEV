@@ -10,7 +10,7 @@ logline="$(date) mkstruct.sh $1 $2"
 echo $logline >> mkstruct.log
 path=${2:-$HOME}
 name=${1:-Kurs}
-kursdir=${path}/${name}
+KURSNAME=${path}/${name}
 
 # Prüfen, ob Schreibrecht besteht
 if ! [ -w $path ]
@@ -19,21 +19,21 @@ then
 	exit 1
 fi
 
-# Prüfen, ob $kursdir schon existiert
-if [ -e $kursdir ]
+# Prüfen, ob $KURSNAME schon existiert
+if [ -e $KURSNAME ]
 then
-	echo "$kursdir existiert schon - Abbruch" | tee -a mkstruct.log >&2
+	echo "$KURSNAME existiert schon - Abbruch" | tee -a mkstruct.log >&2
 	exit 2
 fi
 
-mkdir ${kursdir} | tee -a mkstruct.log  2>&1
-mkdir ${kursdir}/block1
-mkdir ${kursdir}/block1/aufgaben
-mkdir ${kursdir}/block1/loesungen
-cp -R ${kursdir}/block1 ${kursdir}/block2
-cp -R ${kursdir}/block1 ${kursdir}/block3
-cp -R ${kursdir}/block1 ${kursdir}/block4
-cp -R ${kursdir}/block1 ${kursdir}/block5
+mkdir ${KURSNAME} | tee -a mkstruct.log  2>&1
+mkdir ${KURSNAME}/block1
+mkdir ${KURSNAME}/block1/aufgaben
+mkdir ${KURSNAME}/block1/loesungen
+cp -R ${KURSNAME}/block1 ${KURSNAME}/block2
+cp -R ${KURSNAME}/block1 ${KURSNAME}/block3
+cp -R ${KURSNAME}/block1 ${KURSNAME}/block4
+cp -R ${KURSNAME}/block1 ${KURSNAME}/block5
 
 exit 0
 
