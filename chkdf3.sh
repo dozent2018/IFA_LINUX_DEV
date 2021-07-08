@@ -1,6 +1,6 @@
-#!/bin/bash
-# chkdf2.sh führt eine einmalige
+# chkdf3.sh läuft im Hintergrund und führt in regelmässigen Zeitabständen eine
 # Überprüfung aus, wie voll bestimmte Dateisysteme sind.
+# Die Zeit zwischen den Prüfungen wird mit -i sekunden angegeben
 # Beim Start wird optional eine Konfigurationsdatei mit –f dateiname übergeben.
 # Ohne diese Angabe wird eine Datei chkdf.cfg im aktuellen Verzeichnis benutzt
 # In der Kobfigurationsdatei  stehen die Mountpunkte, die überwacht werden sollen 
@@ -14,13 +14,14 @@
 # Wenn keine Konfigurationsdatei angegeben wird, kann mit –t eine Prozentzahl 
 # angegeben werden. Dann werden alle Dateisysteme auf die Überschreitung dieser Zahl 
 # geprüft. Die Optionen -f und –t schliessen sich gegenseitig aus
+# Die Optionen -i und -t schliessen sich gegenseitig aus
 
 # Funktionen
 usage() {
 	# Alle Ausgaben auf stderr umlenken
 	exec 1>&2
 
-	echo "usage: $(basename $0) [ [-f file] [-d char] ] | -t fixed_% "
+	echo "usage: $(basename $0) [ [-f file] [-d char] [-i seconds] ] | -t fixed_% "
 	echo "       $(basename $0) -h displays help text"                             
 }
 
@@ -40,6 +41,8 @@ help() {
 	echo "          Default configuration file is ./chkdf.cfg"
 	echo "       -d <character> sets delimiter in <config_file> to <character>"
 	echo "          Default delimiter is '='"
+	echo "       -i <seconds> sets elapsed time between repeated checks"
+	echo "          Default interval is 3600 seconds (1 hour)"
 	echo "       -t <threshold_in_%> sets a fixed threshold for all file systems"
 	echo "          no configuration file is used when -t is specified"
 }
@@ -65,7 +68,8 @@ read_config(){
 	# Trennzeichen wird als $2 übergeben
         local config_file=$1
         local delim_char=$2	
-	# Array muss vorsichtshalber gelöscht und als global (-g) neu angelegt werden
+	# Array muss gelöscht und als global angelegt werden, für den Fall dass
+	# eine Zeile im Konfigurationsfile gelöscht wurde
 	unset disks
 	declare -g -A disks
 	echo "Reading configuration file $config_file with delimiter $delim_char"
@@ -96,11 +100,18 @@ check_configured() {
 		actual_pct=$(df $mnt | awk 'NR>1 { print $5 }' | tr -d '%')
 		if (( actual_pct > ${disks[$mnt]} ))
 		then
+			# echo ist bei Ausführung im Hintergrund nicht wirklich sinnvoll
+			# In der Praxis sollte hier eher ein Mail oder ein SMS
+			# geschickt werden, oder ein Pager angerufen werden
 			timestamp=$(date):
 			echo "$timestamp space usage of $mnt is higher than ${disks[$mnt]} %"
 		fi
 	done
 }
+
+# Das script reagiert auf das Signal 10 (SIGUSR1). Wenn es empfangen wird,
+# soll die Konfigurationsdatei neu eingelesen werden. Beim nächsten Check
+# gelten dann die geänderten Werte in der Konfigurationsdatei
 
 # Default-Werte für diverse Variablen
 file=./chkdf.cfg
@@ -109,6 +120,7 @@ d_mode=0
 t_mode=0
 threshold=0
 delimiter='='
+interval=3600
 
 while getopts hf:d:t:i: option
 do
@@ -141,26 +153,48 @@ do
 		h) help
 		   exit 0	
 		   ;;
+		i) interval="$OPTARG"
+		   if ! is_int "$interval"; then
+		   	# Benutzer hat nach -i keine ganze Zahl angegeben
+		   	usage
+		   	exit 1
+		   fi
+		   i_mode=1
+		   # wenn -t threshold angegeben wurde, ist -i zeitintervall
+		   # nicht vorgesehen. Daher die folgende Überprüfung
+		   if (( t_mode == 1 )); then
+		   	usage
+		   	exit 1
+		   fi
+		   ;;
 		?) usage
 		   exit 1
 	esac
 done
+# Signal 10 (SIGUSR1) abfangen
+# Die Funktions-Argumente müssen in "" stehen, damit delimiter wie '=',';'
+# korrekt übernommen werden und Dateinamen mit Leerzeichen funktionieren
+trap 'read_config "$file" "$delimiter"' SIGUSR1
 
 # -t % angegeben: fester Schwellwert für alle Mountpoints, einmal aufrufen
 if (( t_mode == 1 )); then
 	check_all "$fixed_threshold"
-	# Fertig
 	exit 0
 fi
-# Wenn nicht mit -t prozent aufgerufen, wird die Konfiurationsdatei gebraucht
-# Kann die Konfigurationsdatei gelesen werden?
+
+echo PID is $$
 if ! [ -f "$file" ] || ! [ -r "$file" ]; then
 	echo "file $file cannot be read" 1>&2
 	usage
 	exit 1
 fi
-# Datei einlesen
+
 read_config "$file" "$delimiter"
-# Prüfung durchführen
-check_configured
+
+# Das script läuft ansonsten in einer Endlosschleife
+while true; do
+   check_configured
+   sleep "$interval"
+done
+#
 exit 0
