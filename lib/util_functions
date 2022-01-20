@@ -50,10 +50,12 @@ is_root() {
 }
 export -f is_root
 
-# Funktion, die den Benutzer bittet, entweder 'Y', 'y', 'N' oder 'n'
-# Bei Eingabe von 'Y' oder 'y', wird 0 zurückgegeben, bei 'N' oder 'n' 1
+# Funktion, die den Benutzer bittet, entweder 'Y', 'y', 'N' oder 'n' einzugeben
 # Bei anderen Eingaben wird die Abfrage wiederholt.
 # Parameter: Prompt-String für die Abfrage
+#            Default-Prompt, wenn kein Parameter angegeben wurde.
+# Rückgabe:
+#            Bei 'Y' oder 'y', wird 0 zurückgegeben, bei 'N' oder 'n' 1
 yesno() {
     prompt=${1:-"Antworten Sie mit Y oder N: "}
     input=''
