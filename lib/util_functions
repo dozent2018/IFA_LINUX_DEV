@@ -38,3 +38,31 @@ set_usage_text() {
 }
 export -f set_usage_text
 
+# Funktion, die überprüft ob der Benutzer als root angemeldet ist
+# Wenn ja, wird 0 zurückgegeben, wenn nein 1
+is_root() {
+    if [ $(id -u) -eq 0 ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+export -f is_root
+
+# Funktion, die den Benutzer bittet, entweder 'Y', 'y', 'N' oder 'n'
+# Bei Eingabe von 'Y' oder 'y', wird 0 zurückgegeben, bei 'N' oder 'n' 1
+# Bei anderen Eingaben wird die Abfrage wiederholt.
+# Parameter: Prompt-String für die Abfrage
+yesno() {
+    prompt=${1:-"Antworten Sie mit Y oder N: "}
+    input=''
+    while [ "$input" != "Y" -a "$input" != "y" -a "$input" != "N" -a "$input" != "n" ]
+    do
+        read -p "$prompt" input
+    done
+
+    [ "$input" = 'Y' -o "$input" = 'y' ] && return 0
+    [ "$input" = 'N' -o "$input" = 'n' ] && return 1
+}
+export -f yesno

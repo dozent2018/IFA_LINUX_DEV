@@ -11,4 +11,6 @@ while getopts ab: opt; do
 done
 echo "Wert von OPTIND: $OPTIND"
 shift $(($OPTIND - 1))
-echo $@
+for arg in $@; do
+  echo $arg
+done
