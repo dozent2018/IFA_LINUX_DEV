@@ -1,0 +1,53 @@
+#!/bin/bash     
+#title          :math_functions
+#description    :Library mit mathematischen funktionen
+#author         :Jochen Reinholdt
+#date           :20180820
+#version        :1.0    
+#usage          :source <Path-To-This-File>/<This-File> ODER . <Path-To-This-File>/This-File
+#notes          :
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+# prüft, ob der 1. Parameter eine ganze Zahl ist
+is_int() {
+    if [ "$1" -eq "$1" ] 2>/dev/null
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+export -f is_int
+
+
+# prüft, ob der 1. Parameter eine ganze Zahl oder Fliesskommazahl ist
+is_num() {
+    if [[ "$1" =~ ^-?[0-9]*\.?[0-9]+$ ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+export -f is_num
+
+
+# gibt die Summe der Parameter (ganze Zahlen) zurück
+summe_int() {
+    sum=0
+    for i in $@
+    do
+        # nur summieren, wenn es eine Zahl ist
+        if is_int $i
+        then
+		    let sum=sum+$i
+        fi
+    done
+    echo $sum
+    return 0
+}
+
+export -f summe_int

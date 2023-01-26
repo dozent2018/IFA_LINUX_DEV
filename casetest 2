@@ -1,0 +1,18 @@
+#!/bin/bash
+# Name        : casetest
+# Beschreibung: Demonstriert die case-Anweisung mit Inhalt von $1
+# Autor       : Jochen Reinholdt
+# Version     : 1
+# Datum       : 20180925
+# ================================================================ 
+case "$1" in
+    -i) echo "Interaktiver Modus" ;;
+    -s) echo "Stiller Modus" ;;
+    -v | -V | v | V) echo "Geschwätziger Modus" 
+        echo blablabl
+        echo blablablaa
+        ;;
+     *) echo "Unbekannte Option"
+        exit 1 ;;
+esac
+exit 0;

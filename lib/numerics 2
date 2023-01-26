@@ -1,0 +1,55 @@
+#!/bin/bash     
+#title          :is_number
+#description    :Funktion is_number gibt 0 zurück, wenn das 1. Argument eine Zahl ist, sonst 1
+#author         :Jochen Reinholdt
+#date           :20180821
+#version        :1.0    
+#usage          :./is_number
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+is_int() {
+	if [ "$1" -eq "$1" ] 2>/dev/null
+	then
+		return 0
+	fi
+	return 1
+}
+
+# Funktion is_decimal gibt 0 zurück, wenn $1 eine Dezimalzahl ist, sonst 1 
+is_decimal() {
+    local result=""
+	result=`echo $1 | grep -E ^\-?[0-9]?\.?[0-9]+$`
+    if [ "$result" != '' ]
+    then 
+		return 0
+    else
+		return 1
+	fi 
+}
+
+#function isNaturalNumber()
+#{
+# [[ ${1} =~ ^[0-9]+$ ]]
+#}
+#
+#function isInteger() 
+#{
+# [[ ${1} == ?(-)+([0-9]) ]]
+#}
+#
+#function isFloat() 
+#{
+# [[ ${1} == ?(-)@(+([0-9]).*([0-9])|*([0-9]).+([0-9]))?(E?(-|+)+([0-9])) ]]
+#}
+#
+#function isNumber()
+#{
+# isNaturalNumber $1 || isInteger $1 || isFloat $1
+#}
+#
+isNaturalNumber() { [[ ${1} =~ ^[0-9]+$ ]]; }
+isInteger() { [[ ${1} == ?(-)+([0-9]) ]]; }
+isFloat() { [[ ${1} == ?(-)@(+([0-9]).*([0-9])|*([0-9]).+([0-9]))?(E?(-|+)+([0-9])) ]]; }
+isNumber() { isNaturalNumber $1 || isInteger $1 || isFloat $1; }#

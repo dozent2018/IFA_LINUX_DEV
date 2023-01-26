@@ -1,0 +1,61 @@
+# function_demo zeigt, wie man funktionen verwendet, um wiederholte
+# Teile eines skripts nur einmal schreiben muss
+# Beispiel: Ein simpler Rechner, der zwei Zahlen
+# addiert, subtrahiert, multipliziert oder dividiert
+
+source myfunctions
+
+function help {
+    echo "$0 führt Grundrechenarten aus:"
+    echo "-a zahl1 zahl2   zahl1 + zahl2"
+    echo "-s zahl1 zahl2   zahl1 - zahl2"
+    echo "-m zahl1 zahl2   zahl1 * zahl2"
+    echo "-d zahl1 zahl2   zahl1 / zahl2"
+}
+
+function usage {
+    echo "Usage: $0 -asmd ganzzahl1 ganzzahl2"
+}
+
+
+if [ $# -ne 3 ]
+then
+    usage
+    exit 1
+fi
+
+
+
+if ! is_number $1 || ! is_number $2
+then
+    usage
+    exit 1
+fi
+
+while getopts samdh opt 2>/dev/null
+do
+    case $opt in
+        a) let ergebnis=$2+$3
+           echo $ergebnis
+           exit 0
+           ;;
+        s) let ergebnis=$2-$3
+           echo $ergebnis
+           exit 0
+           ;;
+        m) let ergebnis=$2\*$3
+           echo $ergebnis
+           exit 0
+           ;;
+        d) let ergebnis=$2/$3
+           echo $ergebnis
+           exit 0
+           ;;
+        h) help 
+           exit 0;;
+        ?) echo "Unbekannte Option" 
+           usage
+           exit 1
+           ;;
+    esac
+done

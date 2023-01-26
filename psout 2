@@ -1,0 +1,70 @@
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 18:56 ?        00:00:00 /sbin/init
+root         2     0  0 18:56 ?        00:00:00 [kthreadd]
+root         3     2  0 18:56 ?        00:00:00 [ksoftirqd/0]
+root         5     2  0 18:56 ?        00:00:00 [kworker/0:0H]
+root         7     2  0 18:56 ?        00:00:00 [rcu_sched]
+root         8     2  0 18:56 ?        00:00:00 [rcu_bh]
+root         9     2  0 18:56 ?        00:00:00 [migration/0]
+root        10     2  0 18:56 ?        00:00:00 [lru-add-drain]
+root        11     2  0 18:56 ?        00:00:00 [watchdog/0]
+root        12     2  0 18:56 ?        00:00:00 [cpuhp/0]
+root        13     2  0 18:56 ?        00:00:00 [kdevtmpfs]
+root        14     2  0 18:56 ?        00:00:00 [netns]
+root        15     2  0 18:56 ?        00:00:00 [khungtaskd]
+root        16     2  0 18:56 ?        00:00:00 [oom_reaper]
+root        17     2  0 18:56 ?        00:00:00 [writeback]
+root        18     2  0 18:56 ?        00:00:00 [kcompactd0]
+root        19     2  0 18:56 ?        00:00:00 [ksmd]
+root        21     2  0 18:56 ?        00:00:00 [khugepaged]
+root        22     2  0 18:56 ?        00:00:00 [crypto]
+root        23     2  0 18:56 ?        00:00:00 [kintegrityd]
+root        24     2  0 18:56 ?        00:00:00 [bioset]
+root        25     2  0 18:56 ?        00:00:00 [kblockd]
+root        26     2  0 18:56 ?        00:00:00 [devfreq_wq]
+root        27     2  0 18:56 ?        00:00:00 [watchdogd]
+root        28     2  0 18:56 ?        00:00:00 [kswapd0]
+root        29     2  0 18:56 ?        00:00:00 [vmstat]
+root        41     2  0 18:56 ?        00:00:00 [kthrotld]
+root        42     2  0 18:56 ?        00:00:00 [ipv6_addrconf]
+root        75     2  0 18:56 ?        00:00:00 [ata_sff]
+root        78     2  0 18:56 ?        00:00:01 [kworker/0:2]
+root       111     2  0 18:56 ?        00:00:00 [scsi_eh_0]
+root       112     2  0 18:56 ?        00:00:00 [scsi_tmf_0]
+root       113     2  0 18:56 ?        00:00:00 [scsi_eh_1]
+root       114     2  0 18:56 ?        00:00:00 [scsi_tmf_1]
+root       115     2  0 18:56 ?        00:00:00 [scsi_eh_2]
+root       116     2  0 18:56 ?        00:00:00 [scsi_tmf_2]
+root       117     2  0 18:56 ?        00:00:00 [kworker/u2:2]
+root       119     2  0 18:56 ?        00:00:00 [bioset]
+root       120     2  0 18:56 ?        00:00:00 [bioset]
+root       122     2  0 18:56 ?        00:00:00 [kworker/0:1H]
+root       156     2  0 18:56 ?        00:00:00 [jbd2/sda1-8]
+root       157     2  0 18:56 ?        00:00:00 [ext4-rsv-conver]
+root       184     1  0 18:56 ?        00:00:00 /lib/systemd/systemd-journald
+root       189     2  0 18:56 ?        00:00:00 [kauditd]
+root       197     1  0 18:56 ?        00:00:00 /lib/systemd/systemd-udevd
+systemd+   342     1  0 18:56 ?        00:00:00 /lib/systemd/systemd-timesyncd
+root       350     1  0 18:56 ?        00:00:00 /usr/sbin/cron -f
+root       351     1  0 18:56 ?        00:00:00 /usr/sbin/rsyslogd -n
+message+   352     1  0 18:56 ?        00:00:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+root       386     1  0 18:56 ?        00:00:00 /lib/systemd/systemd-logind
+root       407     1  0 18:56 tty1     00:00:00 /bin/login --
+root       409     1  0 18:56 ?        00:00:00 /usr/sbin/sshd -D
+root       426     1  0 18:56 ?        00:00:00 /sbin/dhclient -4 -v -pf /run/dhclient.enp0s3.pid -lf /var/lib/dhcp/dhclient.enp0s3.leases -I -df /var/lib/dhcp/dhclient6.enp0s3.leases enp0s3
+root       453     1  0 18:56 ?        00:00:00 /lib/systemd/systemd --user
+root       455   453  0 18:56 ?        00:00:00 (sd-pam)
+root       457   407  0 18:56 tty1     00:00:00 -bash
+root       464   409  0 18:57 ?        00:00:00 sshd: jochen [priv]
+jochen     466     1  0 18:57 ?        00:00:00 /lib/systemd/systemd --user
+jochen     467   466  0 18:57 ?        00:00:00 (sd-pam)
+jochen     473   464  0 18:57 ?        00:00:00 sshd: jochen@pts/0
+jochen     474   473  0 18:57 pts/0    00:00:00 -bash
+root       756     2  0 19:23 ?        00:00:00 [kworker/u2:0]
+jochen     768   474  0 19:26 pts/0    00:00:00 /usr/bin/vim Loesungen1
+root       770   409  0 19:29 ?        00:00:00 sshd: jochen [priv]
+jochen     776   770  0 19:29 ?        00:00:00 sshd: jochen@pts/1
+jochen     777   776  0 19:29 pts/1    00:00:00 -bash
+root       805     2  0 19:47 ?        00:00:00 [kworker/0:1]
+root       806     2  0 19:53 ?        00:00:00 [kworker/0:0]
+jochen     807   777  0 19:53 pts/1    00:00:00 ps -ef
